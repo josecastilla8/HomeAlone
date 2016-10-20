@@ -1,4 +1,4 @@
-package mx.itesm.demovideojuegos;
+package mx.itesm;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
