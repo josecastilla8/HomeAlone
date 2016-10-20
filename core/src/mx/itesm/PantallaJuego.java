@@ -25,6 +25,7 @@ public class PantallaJuego implements Screen {
     private final Juego juego;
     private Stage escena;
     private Texture texturaBtnBack;
+    private Personaje personaje;
 
     public PantallaJuego(Juego juego) {
         this.juego = juego;
@@ -38,6 +39,7 @@ public class PantallaJuego implements Screen {
         fondoJuegoTextura = new Texture(Gdx.files.internal("Nivel1.png"));
         fondo = new Fondo(fondoJuegoTextura);
         batch = new SpriteBatch();
+        Personaje Personaje;
 
         //Boton
         texturaBtnBack = new Texture("botonback.png");
