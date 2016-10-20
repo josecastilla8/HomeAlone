@@ -2,9 +2,11 @@ package mx.itesm;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -14,25 +16,41 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class MenuPrincipal implements Screen {
 
-	private final Juego juego;
+	private final float ALTO= 800;
+	private final float ANCHO= 1280;
 
+	private final Juego juego;
 	private Stage escena;
 
+	//Declaramos la camara
+	private OrthographicCamera camara;
+	private Viewport vista;
+	//*********************
 
+	//SpriteBatch sirve para administrar los trazos
+	private SpriteBatch batch;
+	//**********************
+
+	//Fondo
+	private Fondo fondo;
 	private Texture texturaFondo;
 
 	private Texture texturaTitulo;
 
+	//Botones
 	private Texture texturaBtnJugar;
 	private Texture texturaBtnOpciones;
 	private Texture texturaBtnAcercaDe;
 	private Texture texturaBtnScores;
 
 
-	private final AssetManager assetManager = new AssetManager();
+	//private final AssetManager assetManager = new AssetManager();
 
 	public MenuPrincipal(Juego juego) {
 		this.juego = juego;
@@ -40,45 +58,59 @@ public class MenuPrincipal implements Screen {
 
 
 	public void create () {
-		cargarTexturas();
-		escena = new Stage();
+		//float ancho= Gdx.graphics.getWidth();
+		//float alto= Gdx.graphics.getHeight();
+		//inicializarCamara();
+		//cargarTexturas();
+		//crearEscena();
 
-		Gdx.input.setInputProcessor(escena);
+		//Quien procesa los eventos
+		//Gdx.input.setInputProcessor(this);
 
-		float ancho = Gdx.graphics.getWidth();
-		float alto = Gdx.graphics.getHeight();
+		//escena = new Stage();
 
+		//Fondo
+		escena= new Stage();
 
-		Image imgFondo = new Image(texturaFondo);
-		float escalaX = Gdx.graphics.getWidth() / imgFondo.getWidth();
-		float escalaY = Gdx.graphics.getHeight() / imgFondo.getHeight();
-		imgFondo.setScale(escalaX, escalaY);
-		escena.addActor(imgFondo);
+		camara = new OrthographicCamera(1280,800);
+		camara.position.set(1280 / 2, 800 / 2, 0);
+		camara.update();
+		vista= new StretchViewport(ANCHO, ALTO, camara);
 
+		texturaFondo = new Texture(Gdx.files.internal("FondoInicio.png"));
+		fondo = new Fondo(texturaFondo);
+		batch = new SpriteBatch();
+
+		//Boton Jugar
+		texturaBtnJugar= new Texture("Start.png");
 		TextureRegionDrawable trBtnJugador = new TextureRegionDrawable(new TextureRegion(texturaBtnJugar));
 		ImageButton btnJugar = new ImageButton(trBtnJugador);
-		btnJugar.setPosition(ancho / 2 - btnJugar.getWidth() / 2, 0.431f * alto);
+		btnJugar.setPosition(ANCHO / 2 - btnJugar.getWidth() / 2, 0.35f * ALTO);
+
 		escena.addActor(btnJugar);
 
+		//Boton Opciones
+		texturaBtnOpciones= new Texture("Setting.png");
 		TextureRegionDrawable trBtnOpciones = new TextureRegionDrawable(new TextureRegion(texturaBtnOpciones));
 		ImageButton btnOpciones = new ImageButton(trBtnOpciones);
-		btnOpciones.setPosition((ancho / 0x2) - btnOpciones.getWidth() / 2, 0.28f * alto);
+		btnOpciones.setPosition((ANCHO/2) - btnOpciones.getWidth()/2, 0.28f * ALTO);
 		escena.addActor(btnOpciones);
 
+		//Boton Acerca de
+		texturaBtnAcercaDe= new Texture("About.png");
 		TextureRegionDrawable trBtnAcercaDe = new TextureRegionDrawable(new TextureRegion(texturaBtnAcercaDe));
 		ImageButton btnAcercaDe = new ImageButton(trBtnAcercaDe);
-		btnAcercaDe.setPosition((ancho / 0x5) - (btnAcercaDe.getWidth() / 2), 0.28f * alto);
+		btnAcercaDe.setPosition((ANCHO/6)-(texturaBtnAcercaDe.getWidth()/2), 0.28f * ALTO);
 		escena.addActor(btnAcercaDe);
 
+		//Boton Scores
+		texturaBtnScores= new Texture("HighScore.png");
 		TextureRegionDrawable trBtnScores = new TextureRegionDrawable(new TextureRegion(texturaBtnScores));
 		ImageButton btnScores = new ImageButton(trBtnScores);
-		btnScores.setPosition((ancho / 1.24f) - (btnScores.getWidth()/ 2), 0.23f * alto);
+		btnScores.setPosition((5*ANCHO /6) - (btnScores.getWidth()/ 2), 0.28f * ALTO);
 		escena.addActor(btnScores);
 
-		/*/Image imgTitulo = new Image(texturaTitulo);
-		imgTitulo.setPosition(ancho/2 - imgTitulo.getWidth()/2, 0.8f*alto);
-		escena.addActor(imgTitulo);
-		/*/
+
 
 		btnJugar.addListener(new ClickListener(){
 			@Override
@@ -92,7 +124,9 @@ public class MenuPrincipal implements Screen {
 			@Override
 			public void clicked (InputEvent event, float x, float y){
 				Gdx.app.log("Clicked","Se hizo tap sobre OPCIONES");
+				//juego.setScreen(new PantallaOpciones(juego));
 				juego.setScreen(new PantallaOpciones(juego));
+
 			}
 
 		});
@@ -114,35 +148,25 @@ public class MenuPrincipal implements Screen {
 			}
 		});
 
-
-	}
-
-	private void cargarTexturas(){
-		assetManager.load("FondoInicio.png", Texture.class);
-		assetManager.load("Start.png", Texture.class);
-		assetManager.load("Setting.png", Texture.class);
-		assetManager.load("About.png", Texture.class);
-		//assetManager.load("titulo.png",Texture.class);
-		assetManager.load("HighScore.png", Texture.class);
-
-		assetManager.finishLoading();
-		texturaFondo = assetManager.get("FondoInicio.png");
-		texturaBtnJugar = assetManager.get("Start.png");
-		texturaBtnOpciones = assetManager.get("Setting.png");
-		texturaBtnAcercaDe = assetManager.get("About.png");
-		//texturaTitulo = assetManager.get("titulo.png");
-		texturaBtnScores = assetManager.get("HighScore.png");
+		escena.setViewport(vista);
+		Gdx.input.setInputProcessor(escena);
 
 
 	}
 
 
-	public void render () {
-		Gdx.gl.glClearColor(0,0,0,1);
+	@Override
+	public void render(float delta) {
+		Gdx.gl.glClearColor(1,1,1,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		batch.setProjectionMatrix(camara.combined);
 		escena.draw();
 
+		batch.begin();
+		fondo.render(batch);
+		batch.end();
+		escena.draw();
 	}
 
 	@Override
@@ -152,14 +176,8 @@ public class MenuPrincipal implements Screen {
 	}
 
 	@Override
-	public void render(float delta) {
-		render();
-
-	}
-
-	@Override
 	public void resize(int width, int height) {
-
+		vista.update(width, height);
 	}
 
 	@Override
@@ -180,13 +198,9 @@ public class MenuPrincipal implements Screen {
 
 	@Override
 	public void dispose () {
-		texturaFondo.dispose();
-		texturaBtnAcercaDe.dispose();
-		//texturaTitulo.dispose();
-		texturaBtnOpciones.dispose();
-		texturaBtnJugar.dispose();
-		texturaBtnScores.dispose();
-		escena.dispose();
+
 
 	}
+
+
 }
