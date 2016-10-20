@@ -85,7 +85,7 @@ public class MenuPrincipal implements Screen {
 		texturaBtnJugar= new Texture("Start.png");
 		TextureRegionDrawable trBtnJugador = new TextureRegionDrawable(new TextureRegion(texturaBtnJugar));
 		ImageButton btnJugar = new ImageButton(trBtnJugador);
-		btnJugar.setPosition(ANCHO / 2 - btnJugar.getWidth() / 2, 0.35f * ALTO);
+		btnJugar.setPosition(ANCHO / 2 - btnJugar.getWidth() / 2, 0.47f * ALTO);
 
 		escena.addActor(btnJugar);
 
@@ -93,21 +93,21 @@ public class MenuPrincipal implements Screen {
 		texturaBtnOpciones= new Texture("Setting.png");
 		TextureRegionDrawable trBtnOpciones = new TextureRegionDrawable(new TextureRegion(texturaBtnOpciones));
 		ImageButton btnOpciones = new ImageButton(trBtnOpciones);
-		btnOpciones.setPosition((ANCHO/2) - btnOpciones.getWidth()/2, 0.28f * ALTO);
+		btnOpciones.setPosition((ANCHO/2) - btnOpciones.getWidth()/2, 0.23f * ALTO);
 		escena.addActor(btnOpciones);
 
 		//Boton Acerca de
 		texturaBtnAcercaDe= new Texture("About.png");
 		TextureRegionDrawable trBtnAcercaDe = new TextureRegionDrawable(new TextureRegion(texturaBtnAcercaDe));
 		ImageButton btnAcercaDe = new ImageButton(trBtnAcercaDe);
-		btnAcercaDe.setPosition((ANCHO/6)-(texturaBtnAcercaDe.getWidth()/2), 0.28f * ALTO);
+		btnAcercaDe.setPosition((ANCHO/6)-(texturaBtnAcercaDe.getWidth()/2), 0.23f * ALTO);
 		escena.addActor(btnAcercaDe);
 
 		//Boton Scores
-		texturaBtnScores= new Texture("HighScore.png");
+		texturaBtnScores= new Texture("High Score1.png");
 		TextureRegionDrawable trBtnScores = new TextureRegionDrawable(new TextureRegion(texturaBtnScores));
 		ImageButton btnScores = new ImageButton(trBtnScores);
-		btnScores.setPosition((5*ANCHO /6) - (btnScores.getWidth()/ 2), 0.28f * ALTO);
+		btnScores.setPosition((5*ANCHO /6) - (btnScores.getWidth()/ 2), 0.23f * ALTO);
 		escena.addActor(btnScores);
 
 
