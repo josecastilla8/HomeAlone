@@ -7,19 +7,19 @@
   <image source="../Layer 127.png" width="262" height="90"/>
  </tileset>
  <tileset firstgid="97" name="bruno" tilewidth="32" tileheight="32" tilecount="2" columns="1">
-  <image source="../perrito.png" width="32" height="64"/>
+  <image source="../bruno.png" width="32" height="64"/>
  </tileset>
  <tileset firstgid="99" name="fondo verde" tilewidth="32" tileheight="32" tilecount="874" columns="38">
   <image source="fondo verde.png" width="1216" height="760"/>
  </tileset>
- <tileset firstgid="973" name="pared_cocina" tilewidth="32" tileheight="32" tilecount="208" columns="16">
-  <image source="pared_cocina.png" width="512" height="416"/>
+ <tileset firstgid="973" name="pared_cocina-1" tilewidth="32" tileheight="32" tilecount="208" columns="16">
+  <image source="pared_cocina-1.png" width="512" height="416"/>
  </tileset>
  <tileset firstgid="1181" name="pared_cuarto1" tilewidth="32" tileheight="32" tilecount="156" columns="12">
   <image source="pared_cuarto1.png" width="385" height="416"/>
  </tileset>
- <tileset firstgid="1337" name="pared_baño" tilewidth="32" tileheight="32" tilecount="100" columns="10">
-  <image source="pared_baño.png" width="320" height="320"/>
+ <tileset firstgid="1337" name="pared_bano" tilewidth="32" tileheight="32" tilecount="100" columns="10">
+  <image source="pared_bano.png" width="320" height="320"/>
  </tileset>
  <tileset firstgid="1437" name="pared_cocina-1" tilewidth="32" tileheight="32" tilecount="90" columns="9">
   <image source="pared_cocina-1.png" width="312" height="320"/>
@@ -30,8 +30,8 @@
  <tileset firstgid="1709" name="pared_cuartotele" tilewidth="32" tileheight="32" tilecount="156" columns="13">
   <image source="pared_cuartotele.png" width="416" height="414"/>
  </tileset>
- <tileset firstgid="1865" name="pared_baño" tilewidth="32" tileheight="32" tilecount="100" columns="10">
-  <image source="pared_baño.png" width="320" height="320"/>
+ <tileset firstgid="1865" name="pared_bano" tilewidth="32" tileheight="32" tilecount="100" columns="10">
+  <image source="pared_bano.png" width="320" height="320"/>
  </tileset>
  <tileset firstgid="1965" name="paredes" tilewidth="32" tileheight="32" tilecount="1000" columns="40">
   <image source="paredes.png" width="1280" height="800"/>
