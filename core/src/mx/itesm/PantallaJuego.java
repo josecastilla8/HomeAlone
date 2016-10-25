@@ -23,7 +23,7 @@ public class PantallaJuego implements Screen {
     private OrthographicCamera camara;
 
     private final Juego juego;
-    private Stage escena;
+    private Stage escena1;
     private Texture texturaBtnBack;
     private Personaje personaje;
 
@@ -47,8 +47,8 @@ public class PantallaJuego implements Screen {
         TextureRegionDrawable trdBtnBack = new TextureRegionDrawable(new TextureRegion(texturaBtnBack));
         ImageButton btnBack = new ImageButton(trdBtnBack);
 
-        escena = new Stage();
-        escena.addActor(btnBack);
+        escena1 = new Stage();
+        escena1.addActor(btnBack);
 
         btnBack.addListener(new ClickListener(){
             @Override
@@ -58,7 +58,7 @@ public class PantallaJuego implements Screen {
             }
         });
 
-        Gdx.input.setInputProcessor(escena);
+        Gdx.input.setInputProcessor(escena1);
 
     }
 
@@ -70,7 +70,7 @@ public class PantallaJuego implements Screen {
         batch.begin();
         fondo.render(batch);
         batch.end();
-        escena.draw();
+        escena1.draw();
 
     }
 

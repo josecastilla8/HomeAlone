@@ -13,6 +13,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -38,6 +39,7 @@ public class pantallaMapa implements Screen {
     //MAPA
     private TiledMap mapa; //Informacion del mapa en memoria
     private OrthogonalTiledMapRenderer rendererMapa; //Objeto para dibujar el mapa
+    private Stage escena;
     //******************
 
     public pantallaMapa(Juego juego) {
@@ -50,6 +52,8 @@ public class pantallaMapa implements Screen {
         crearEscena();
         cargarMapa(); //nuevo
         crearPersonaje();
+        escena = new Stage();
+        Gdx.input.setInputProcessor(escena);
         //Quien procesa los eventos
 
     }
