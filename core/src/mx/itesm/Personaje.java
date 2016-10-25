@@ -46,8 +46,8 @@ public class Personaje {
     Constructor del personaje, recibe una imagen con varios frames, (ver imagen marioSprite.png 128x64, cada tile 32x64)
      */
 
-    public Personaje(Texture textura, Sound sonidoItem) {
-        this.sonidoItem = sonidoItem;
+    public Personaje(Texture textura) {
+        //this.sonidoItem = sonidoItem;
 
         // Lee la textura como región
         TextureRegion texturaCompleta = new TextureRegion(textura);
