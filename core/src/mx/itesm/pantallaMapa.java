@@ -68,9 +68,9 @@ public class pantallaMapa implements Screen {
 
         manager.setLoader(TiledMap.class,
                 new TmxMapLoader(new InternalFileHandleResolver()));
-        manager.load("mapa1.tmx", TiledMap.class);
+        manager.load("mapa3.tmx", TiledMap.class);
         manager.finishLoading(); //Bloquea hasta que carga el mapa
-        mapa= manager.get("mapa1.tmx");
+        mapa= manager.get("mapa3.tmx");
 
         //Crea el objeto que dibujara el mapa
         rendererMapa = new OrthogonalTiledMapRenderer(mapa, batch);
