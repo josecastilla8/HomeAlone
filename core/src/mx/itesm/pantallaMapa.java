@@ -27,8 +27,9 @@ public class pantallaMapa implements Screen {
     private OrthographicCamera camara;
     private Viewport vista;
 
-    private Personaje jugador;
+
     private Texture texturaJugador;
+    private Personaje jugador;
 
 
     //SpriteBatch sirve para administrar los trazos
@@ -91,7 +92,7 @@ public class pantallaMapa implements Screen {
         rendererMapa.setView(camara);
 
         //Dude
-        dude = new Personaje(texturaJugador);
+        jugador = new Personaje(texturaJugador);
     }
 
     private void inicializarCamara() {
@@ -99,6 +100,7 @@ public class pantallaMapa implements Screen {
         camara.position.set(1280/2, 800/2, 0);
         camara.update();
         vista= new StretchViewport(1280, 800, camara);
+
 
     }
 
@@ -110,6 +112,7 @@ public class pantallaMapa implements Screen {
 
         batch.setProjectionMatrix(camara.combined);
 
+        rendererMapa.setView(camara);
         rendererMapa.render();
         batch.begin();
         jugador.render(batch);
