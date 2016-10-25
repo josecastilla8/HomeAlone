@@ -11,6 +11,7 @@ public class Boton {
     public Boton(Texture textura){
         sprite = new Sprite(textura);
         sprite.setAlpha(1f);
+
     }
 
     public void render(SpriteBatch batch){
