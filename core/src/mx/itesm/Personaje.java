@@ -33,6 +33,8 @@ public class Personaje {
     private EstadoMovimiento estadoMovimiento=EstadoMovimiento.INICIANDO;
 
 
+
+
     public enum EstadoMovimiento {
         INICIANDO,
         QUIETO,
@@ -53,11 +55,11 @@ public class Personaje {
         TextureRegion texturaCompleta = new TextureRegion(textura);
 
         // La divide en 4 frames de 32x64 (ver marioSprite.png)
-        TextureRegion[][] texturaPersonaje = texturaCompleta.split(32,64);
+        TextureRegion[][] texturaJugador = texturaCompleta.split(53,143);
 
         // Crea la animación con tiempo de 0.25 segundos entre frames.
-        animacion = new Animation(0.25f,texturaPersonaje[0][3],
-                texturaPersonaje[0][2], texturaPersonaje[0][1] );
+        animacion = new Animation(0.25f,texturaJugador[0][4], texturaJugador[0][3],
+                texturaJugador[0][2], texturaJugador[0][1]);
 
         // Animación infinita
         animacion.setPlayMode(Animation.PlayMode.LOOP);
@@ -66,8 +68,8 @@ public class Personaje {
         timerAnimacion = 0;
 
         // Crea el sprite con el personaje quieto (idle)
-        sprite = new Sprite(texturaPersonaje[0][0]);    // QUIETO
-        sprite.setPosition(300,800);    // Posición inicial
+        sprite = new Sprite(texturaJugador[0][0]);    // QUIETO
+        sprite.setPosition(300,400);    // Posición inicial
     }
 
     // Dibuja el personaje
