@@ -46,7 +46,7 @@
   <image source="Closet.png" width="128" height="128"/>
  </tileset>
  <tileset firstgid="3103" name="pared jard[in" tilewidth="32" tileheight="32" tilecount="27" columns="9">
-  <image source="pared jard[in.png" width="288" height="96"/>
+  <image source="paredJardin.png" width="288" height="96"/>
  </tileset>
  <tileset firstgid="3130" name="pasto" tilewidth="32" tileheight="32" tilecount="80" columns="8">
   <image source="pasto.png" width="259" height="351"/>
