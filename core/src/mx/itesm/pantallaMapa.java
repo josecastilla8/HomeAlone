@@ -80,9 +80,10 @@ public class pantallaMapa implements Screen {
         inicializarCamara();
         crearEscena();
         cargarMapa(); //nuevo
-        crearPad();
+
         //crearPersonaje();
         escena = new Stage();
+        crearPad();
         Gdx.input.setInputProcessor(escena);
         //Quien procesa los eventos
 
@@ -94,6 +95,17 @@ public class pantallaMapa implements Screen {
         Skin skin = new Skin();
         skin.add("touchBackground", new Texture("touchBackground.png"));
         skin.add("touchKnob", new Texture("touchKnob.png"));
+
+
+        //Create camera
+        //Create a touchpad skin
+
+        //Create Drawable's from TouchPad skin
+
+
+        //Create a Stage and add TouchPad
+
+        //Create block sprite
 
         // Carcaterísticas del pad
         Touchpad.TouchpadStyle tpEstilo = new Touchpad.TouchpadStyle();

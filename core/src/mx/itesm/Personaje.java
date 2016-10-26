@@ -89,6 +89,21 @@ public class Personaje {
         }
     }
 
+    private void recolectarObjetos(TiledMap mapa) {
+        // Revisar si está sobre una moneda (pies)
+        TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(0);
+        int x = (int)(sprite.getX()/32);
+        int y = (int)(sprite.getY()/32);
+        TiledMapTileLayer.Cell celda = capa.getCell(x,y);
+        if (celda!=null ) {
+            Object tipo = (String)celda.getTile().getProperties().get("tipo");
+            if ( "moneda".equals(tipo) ) {
+                capa.setCell(x,y,null);    // Cuadro azul en lugar de la moneda
+                capa.setCell(x,y,capa.getCell(0,4));
+            }
+        }
+    }
+
     private void moverHorizontal(TiledMap mapa) {
         // Obtiene la primer capa del mapa (en este caso es la única)
         TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(0);
@@ -155,8 +170,6 @@ public class Personaje {
     public void setEstadoMovimiento(EstadoMovimiento estadoMovimiento) {
         this.estadoMovimiento = estadoMovimiento;
     }
-
-
 
 
     public enum EstadoMovimiento {
