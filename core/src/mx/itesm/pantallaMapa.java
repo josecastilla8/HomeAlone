@@ -13,7 +13,11 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -28,21 +32,25 @@ public class pantallaMapa implements Screen {
     private OrthographicCamera camara;
     private Viewport vista;
 
-
+    //Declaramos al jugador
     private Texture texturaJugador;
     private Personaje jugador;
 
+    // Pad
+    private Touchpad pad;
 
     //SpriteBatch sirve para administrar los trazos
     private SpriteBatch batch;
     private final Juego juego;
     //private AssetManager manager;
     // *****************
+
     //MAPA
     private TiledMap mapa; //Informacion del mapa en memoria
     private OrthogonalTiledMapRenderer rendererMapa; //Objeto para dibujar el mapa
     private Stage escena;
     //******************
+
     //Personaje
     private Texture texturaPersonaje;
     private Personaje dude;
@@ -57,20 +65,59 @@ public class pantallaMapa implements Screen {
         inicializarCamara();
         crearEscena();
         cargarMapa(); //nuevo
-        crearPersonaje();
+        crearPad();
+  //      crearPersonaje();
         escena = new Stage();
         Gdx.input.setInputProcessor(escena);
         //Quien procesa los eventos
 
     }
 
-    private void crearPersonaje() {
-        AssetManager manager= new AssetManager();
+    private void crearPad() {
 
+        // Para cargar las texturas y convertirlas en Drawable
+        Skin skin = new Skin();
+        skin.add("touchBackground", new Texture("touchBackground.png"));
+        skin.add("touchKnob", new Texture("touchKnob.png"));
+
+        // Carcaterísticas del pad
+        Touchpad.TouchpadStyle tpEstilo = new Touchpad.TouchpadStyle();
+        tpEstilo.background = skin.getDrawable("touchBackground");
+        tpEstilo.knob = skin.getDrawable("touchKnob");
+
+        // Crea el pad, revisa la clase Touchpad para entender los parámetros
+        pad = new Touchpad(50, tpEstilo);
+        pad.setBounds(0, 0, 200, 200); // Posición y tamaño
+        pad.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (jugador.getEstadoMovimiento() != Personaje.EstadoMovimiento.INICIANDO) {
+                    Touchpad p = (Touchpad) actor;
+                    if (p.getKnobPercentX() > 0) {    //Derecha
+                        jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
+                    } else if (p.getKnobPercentX() < 0) { // Izquierda
+                        jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
+                    } else {    // Nada
+                        jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+                    }
+                }
+            }
+        });
+
+        escena.addActor(pad);
+        pad.setColor(1, 1, 1, 0.4f);
     }
+
+    //private void crearPersonaje() {
+      //  AssetManager manager= new AssetManager();
+
+//    }
 
     private void crearEscena() {
         batch= new SpriteBatch();
+
+        escena= new Stage();
+        crearPad();
     }
 
     private void cargarMapa() {
@@ -137,12 +184,13 @@ public class pantallaMapa implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
-
+        texturaJugador.dispose();
+        mapa.dispose();
     }
 
 }
