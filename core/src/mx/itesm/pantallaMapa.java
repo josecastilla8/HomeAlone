@@ -34,9 +34,18 @@ public class pantallaMapa implements Screen {
 
     public static final int ANCHO_MAPA = 1280;
     public static final int ANCHO_CAMARA = 1280;
+    public static final int ALTO_CAMARA = 800;
+
     //Declaramos la camara
     private OrthographicCamera camara;
     private Viewport vista;
+
+    // HUD. Los componentes en la pantalla que no se mueven
+    private OrthographicCamera camaraHUD; // Cámara fija
+    private StretchViewport vistaHUD;
+
+    // Escena para HUD
+    private Stage escena;
 
     //Declaramos al jugador
     private Texture texturaJugador;
@@ -54,7 +63,7 @@ public class pantallaMapa implements Screen {
     //MAPA
     private TiledMap mapa; //Informacion del mapa en memoria
     private OrthogonalTiledMapRenderer rendererMapa; //Objeto para dibujar el mapa
-    private Stage escena;
+    //private Stage escena;
     //******************
 
     //Personaje
@@ -72,7 +81,7 @@ public class pantallaMapa implements Screen {
         crearEscena();
         cargarMapa(); //nuevo
         crearPad();
-  //      crearPersonaje();
+        //crearPersonaje();
         escena = new Stage();
         Gdx.input.setInputProcessor(escena);
         //Quien procesa los eventos
@@ -93,7 +102,7 @@ public class pantallaMapa implements Screen {
 
         // Crea el pad, revisa la clase Touchpad para entender los parámetros
         pad = new Touchpad(20, tpEstilo);
-        pad.setBounds(100, 100, 200, 200); // Posición y tamaño
+        pad.setBounds(0, 0, 200, 200); // Posición y tamaño
         pad.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -113,34 +122,16 @@ public class pantallaMapa implements Screen {
         escena.addActor(pad);
         pad.setColor(1, 1, 1, 0.4f);
 
-        // Botón de salto (lado derecho)
-        Texture texturaBtnSalto = new Texture("botonback.png");
-        TextureRegionDrawable trdBtnSalto = new TextureRegionDrawable(new TextureRegion(texturaBtnSalto));
-        ImageButton btnSalto = new ImageButton(trdBtnSalto);
 
-        btnSalto.addListener(new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //jugador.saltar(); // Iniciar el salto
-                return true;    // Ya consumió el evento
-            }
-        });
-        btnSalto.setPosition(ANCHO_CAMARA-128-32,32); // ancho mundo - ancho de boton - margen
-        escena.addActor(btnSalto);
 
         Gdx.input.setInputProcessor(escena);
     }
-
-    //private void crearPersonaje() {
-      //  AssetManager manager= new AssetManager();
-
-//    }
 
     private void crearEscena() {
         batch= new SpriteBatch();
 
         escena= new Stage();
-
+        escena.setViewport(vistaHUD);
         crearPad();
     }
 
@@ -167,13 +158,26 @@ public class pantallaMapa implements Screen {
         jugador = new Personaje(texturaJugador);
     }
 
+    //private void inicializarCamara() {
+      //  camara= new OrthographicCamera(1280, 800);
+        //camara.position.set(1280/2, 800/2, 0);
+        //camara.update();
+        //vista= new StretchViewport(1280, 800, camara);
+
+
+    //}
+
     private void inicializarCamara() {
-        camara= new OrthographicCamera(1280, 800);
-        camara.position.set(1280/2, 800/2, 0);
+        camara = new OrthographicCamera(ANCHO_CAMARA, ALTO_CAMARA);
+        camara.position.set(ANCHO_CAMARA/2, ALTO_CAMARA /2,0);
         camara.update();
-        vista= new StretchViewport(1280, 800, camara);
+        vista = new StretchViewport(ANCHO_CAMARA, pantallaMapa.ALTO_CAMARA,camara);
 
-
+        // Cámara para HUD
+        camaraHUD = new OrthographicCamera(ANCHO_CAMARA, pantallaMapa.ALTO_CAMARA);
+        camaraHUD.position.set(ANCHO_CAMARA/2, pantallaMapa.ALTO_CAMARA /2, 0);
+        camaraHUD.update();
+        vistaHUD = new StretchViewport(ANCHO_CAMARA, pantallaMapa.ALTO_CAMARA,camaraHUD);
     }
 
     @Override
@@ -189,11 +193,17 @@ public class pantallaMapa implements Screen {
         batch.begin();
         jugador.render(batch);
         batch.end();
+
+        // Dibuja el HUD
+        batch.setProjectionMatrix(camaraHUD.combined);
+        escena.draw();
     }
 
     @Override
     public void resize(int width, int height) {
+
         vista.update(width, height);
+        vistaHUD.update(width, height);
     }
 
     @Override
