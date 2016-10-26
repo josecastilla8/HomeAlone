@@ -5,20 +5,25 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -28,6 +33,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class pantallaMapa implements Screen {
 
     public static final int ANCHO_MAPA = 1280;
+    public static final int ANCHO_CAMARA = 1280;
     //Declaramos la camara
     private OrthographicCamera camara;
     private Viewport vista;
@@ -86,8 +92,8 @@ public class pantallaMapa implements Screen {
         tpEstilo.knob = skin.getDrawable("touchKnob");
 
         // Crea el pad, revisa la clase Touchpad para entender los parámetros
-        pad = new Touchpad(50, tpEstilo);
-        pad.setBounds(0, 0, 200, 200); // Posición y tamaño
+        pad = new Touchpad(20, tpEstilo);
+        pad.setBounds(100, 100, 200, 200); // Posición y tamaño
         pad.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -106,6 +112,23 @@ public class pantallaMapa implements Screen {
 
         escena.addActor(pad);
         pad.setColor(1, 1, 1, 0.4f);
+
+        // Botón de salto (lado derecho)
+        Texture texturaBtnSalto = new Texture("botonback.png");
+        TextureRegionDrawable trdBtnSalto = new TextureRegionDrawable(new TextureRegion(texturaBtnSalto));
+        ImageButton btnSalto = new ImageButton(trdBtnSalto);
+
+        btnSalto.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                //jugador.saltar(); // Iniciar el salto
+                return true;    // Ya consumió el evento
+            }
+        });
+        btnSalto.setPosition(ANCHO_CAMARA-128-32,32); // ancho mundo - ancho de boton - margen
+        escena.addActor(btnSalto);
+
+        Gdx.input.setInputProcessor(escena);
     }
 
     //private void crearPersonaje() {
@@ -117,6 +140,7 @@ public class pantallaMapa implements Screen {
         batch= new SpriteBatch();
 
         escena= new Stage();
+
         crearPad();
     }
 
@@ -128,12 +152,12 @@ public class pantallaMapa implements Screen {
         manager.setLoader(TiledMap.class,
                 new TmxMapLoader(new InternalFileHandleResolver()));
         manager.load("mapa3.tmx", TiledMap.class);
+
         //Cargar personaje
         manager.load("DUDE_camina.png", Texture.class);
         manager.finishLoading(); //Bloquea hasta que carga el mapa
         mapa= manager.get("mapa3.tmx");
         texturaJugador= manager.get("DUDE_camina.png");
-
 
         //Crea el objeto que dibujara el mapa
         rendererMapa = new OrthogonalTiledMapRenderer(mapa, batch);
