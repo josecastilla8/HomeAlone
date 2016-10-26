@@ -11,8 +11,8 @@ public class Item {
 
         private Sprite sprite;
 
-        public Item(Texture text) {
-            sprite = new Sprite(text);
+        public Item(Texture textura) {
+            sprite = new Sprite(textura);
         }
 
         public Item(Texture textura, float x, float y) {
