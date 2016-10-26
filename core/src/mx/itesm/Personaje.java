@@ -102,8 +102,8 @@ public class Personaje {
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(x, y);
             if (celdaDerecha != null) {
                 Object tipo = (String) celdaDerecha.getTile().getProperties().get("tipo");
-                if (!"ladrillo".equals(tipo)) {
-                    celdaDerecha = null;  // Puede pasar
+                if (!"pared".equals(tipo)) {
+                    celdaDerecha = null;// Puede pasar
                 }
             }
             if ( celdaDerecha==null) {
@@ -124,7 +124,7 @@ public class Personaje {
             TiledMapTileLayer.Cell celdaIzquierda = capa.getCell(xIzq, y);
             if (celdaIzquierda != null) {
                 Object tipo = (String) celdaIzquierda.getTile().getProperties().get("tipo");
-                if (!"ladrillo".equals(tipo)) {
+                if (!"pared".equals(tipo)) {
                     celdaIzquierda = null;  // Puede pasar
                 }
             }
