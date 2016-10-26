@@ -200,6 +200,8 @@ public class pantallaMapa implements Screen {
 
         batch.setProjectionMatrix(camara.combined);
 
+        jugador.setY(jugador.getY() + pad.getKnobPercentY()*5);
+        jugador.setX(jugador.getX() + pad.getKnobPercentX()*5);
         rendererMapa.setView(camara);
         rendererMapa.render();
         batch.begin();

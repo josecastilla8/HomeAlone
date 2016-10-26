@@ -89,6 +89,22 @@ public class Personaje {
         }
     }
 
+    public void setX(float x){
+        this.sprite.setX(x);
+    }
+
+    public void setY(float y){
+        this.sprite.setY(y);
+    }
+
+    public float getX(){
+        return this.sprite.getX();
+    }
+
+    public float getY(){
+        return this.sprite.getY();
+    }
+
     private void recolectarObjetos(TiledMap mapa) {
         // Revisar si está sobre una moneda (pies)
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(0);
@@ -153,13 +169,6 @@ public class Personaje {
         }
     }
 
-    public float getX() {
-        return sprite.getX();
-    }
-
-    public float getY() {
-        return sprite.getY();
-    }
 
     // Accesor de estadoMovimiento
     public EstadoMovimiento getEstadoMovimiento() {
