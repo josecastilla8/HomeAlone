@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  */
 public class pantallaMapa implements Screen {
 
+    public static final int ANCHO_MAPA = 1280;
     //Declaramos la camara
     private OrthographicCamera camara;
     private Viewport vista;

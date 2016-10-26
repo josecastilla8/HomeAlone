@@ -33,17 +33,6 @@ public class Personaje {
     private EstadoMovimiento estadoMovimiento=EstadoMovimiento.INICIANDO;
 
 
-
-
-    public enum EstadoMovimiento {
-        INICIANDO,
-        QUIETO,
-        MOV_IZQUIERDA,
-        MOV_DERECHA,
-        MOV_ARRIBA,
-        MOV_ABAJO
-    }
-
     /*
     Constructor del personaje, recibe una imagen con varios frames, (ver imagen marioSprite.png 128x64, cada tile 32x64)
      */
@@ -98,6 +87,85 @@ public class Personaje {
                 sprite.draw(batch); // Dibuja el sprite
                 break;
         }
+    }
+
+    private void moverHorizontal(TiledMap mapa) {
+        // Obtiene la primer capa del mapa (en este caso es la única)
+        TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(0);
+        // Ejecutar movimiento horizontal
+        float nuevaX = sprite.getX();
+        // ¿Quiere ir a la Derecha?
+        if ( estadoMovimiento==EstadoMovimiento.MOV_DERECHA) {
+            // Obtiene el bloque del lado derecho. Asigna null si puede pasar.
+            int x = (int) ((sprite.getX() + 32) / 32);   // Convierte coordenadas del mundo en coordenadas del mapa
+            int y = (int) (sprite.getY() / 32);
+            TiledMapTileLayer.Cell celdaDerecha = capa.getCell(x, y);
+            if (celdaDerecha != null) {
+                Object tipo = (String) celdaDerecha.getTile().getProperties().get("tipo");
+                if (!"ladrillo".equals(tipo)) {
+                    celdaDerecha = null;  // Puede pasar
+                }
+            }
+            if ( celdaDerecha==null) {
+                // Ejecutar movimiento horizontal
+                nuevaX += VELOCIDAD_X;
+                // Prueba que no salga del mundo por la derecha
+                if (nuevaX <= pantallaMapa.ANCHO_MAPA - sprite.getWidth()) {
+                    sprite.setX(nuevaX);
+                    //probarCaida(mapa);
+                }
+            }
+        }
+        // ¿Quiere ir a la izquierda?
+        if ( estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
+            int xIzq = (int) ((sprite.getX()) / 32);
+            int y = (int) (sprite.getY() / 32);
+            // Obtiene el bloque del lado izquierdo. Asigna null si puede pasar.
+            TiledMapTileLayer.Cell celdaIzquierda = capa.getCell(xIzq, y);
+            if (celdaIzquierda != null) {
+                Object tipo = (String) celdaIzquierda.getTile().getProperties().get("tipo");
+                if (!"ladrillo".equals(tipo)) {
+                    celdaIzquierda = null;  // Puede pasar
+                }
+            }
+            if ( celdaIzquierda==null) {
+                // Prueba que no salga del mundo por la izquierda
+                nuevaX -= VELOCIDAD_X;
+                if (nuevaX >= 0) {
+                    sprite.setX(nuevaX);
+                }
+            }
+        }
+    }
+
+    public float getX() {
+        return sprite.getX();
+    }
+
+    public float getY() {
+        return sprite.getY();
+    }
+
+    // Accesor de estadoMovimiento
+    public EstadoMovimiento getEstadoMovimiento() {
+        return estadoMovimiento;
+    }
+
+    // Modificador de estadoMovimiento
+    public void setEstadoMovimiento(EstadoMovimiento estadoMovimiento) {
+        this.estadoMovimiento = estadoMovimiento;
+    }
+
+
+
+
+    public enum EstadoMovimiento {
+        INICIANDO,
+        QUIETO,
+        MOV_IZQUIERDA,
+        MOV_DERECHA,
+        MOV_ARRIBA,
+        MOV_ABAJO
     }
 
 }
