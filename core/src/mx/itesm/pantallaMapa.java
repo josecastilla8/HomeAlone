@@ -26,6 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -90,7 +91,11 @@ public class pantallaMapa implements Screen {
     //Item Playera
     private Texture texturaItemPlayera;
     private ArrayList<Item> itemPlayera;
-
+    private int estadoJuego = 0;
+    private Texture texturaFinalGano;
+    private Fondo fondoFinalGano;
+    private Texture texturaFinalPierde;
+    private Fondo fondoFinalPierde;
 
     public pantallaMapa(Juego juego) {
         this.juego= juego;
@@ -99,11 +104,18 @@ public class pantallaMapa implements Screen {
     @Override
     public void show() {
         random = new Random();
+        texturaFinalGano = new Texture("Pantalla Winner.png");
+        fondoFinalGano = new Fondo(texturaFinalGano);
+
+        texturaFinalPierde = new Texture("Pantalla Loser.png");
+        fondoFinalPierde = new Fondo(texturaFinalPierde);
+
         inicializarCamara();
         crearEscena();
         cargarMapa(); //nuevo
         texto = new Texto();
         itemPlayera = new ArrayList<Item>();
+
         //crearPersonaje();
         escena = new Stage();
         crearPad();
@@ -244,47 +256,64 @@ public class pantallaMapa implements Screen {
         float xActual = jugador.getX();
         float yActual = jugador.getY();
 
-        jugador.setY(jugador.getY() + pad.getKnobPercentY()*5);
-        jugador.setX(jugador.getX() + pad.getKnobPercentX()*5);
+        //0 - Jugando, 1 - Gano, 2- Perdio, 3 - Pausa
+        switch (this.estadoJuego){
+            case 0:
+                jugador.setY(jugador.getY() + pad.getKnobPercentY()*5);
+                jugador.setX(jugador.getX() + pad.getKnobPercentX()*5);
 
-        enemigoPapa.setY(enemigoPapa.getY() + 1 );
-        enemigoPapa.setX(enemigoPapa.getX() + 2);
+                enemigoPapa.setY(enemigoPapa.getY() + 1 );
+                enemigoPapa.setX(enemigoPapa.getX() + 2);
 
 
 
-        if(xActual == jugador.getX() && yActual == jugador.getY()){
-            jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
-        }else if(xActual > jugador.getX() && yActual == jugador.getY()){
-            jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
-        }else if(xActual < jugador.getX() && yActual == jugador.getY()){
-            jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
+                if(xActual == jugador.getX() && yActual == jugador.getY()){
+                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+                }else if(xActual > jugador.getX() && yActual == jugador.getY()){
+                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
+                }else if(xActual < jugador.getX() && yActual == jugador.getY()){
+                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
+                }
+
+
+
+
+
+
+                rendererMapa.setView(camara);
+                rendererMapa.render();
+                batch.begin();
+                texto.mostrarMensaje(batch, "Score: " + contador, 100, 750);
+                jugador.render(batch);
+                enemigoPapa.render(batch);
+                //System.out.println(checarColisiones());
+                for (int i = 0; i < itemPlayera.size(); i++) {
+                    if(checarColisiones(itemPlayera.get(i)) == false){
+                        itemPlayera.get(i).render(batch);
+                    }else if(checarColisiones(itemPlayera.get(i)) == true){
+                        itemPlayera.get(i).setX(10000);
+                        contador++;
+                    }
+
+                }
+                if(contador == 5){
+                    this.estadoJuego = 1;
+                }
+                batch.end();
+
+            case 1:
+                batch.begin();
+                fondoFinalGano.render(batch);
+                batch.end();
+            case 2:
+                batch.begin();
+                fondoFinalPierde.render(batch);
+                batch.end();
+            default:
+                break;
         }
 
 
-
-
-
-
-        rendererMapa.setView(camara);
-        rendererMapa.render();
-        batch.begin();
-        texto.mostrarMensaje(batch, "Score: " + contador, 100, 750);
-        jugador.render(batch);
-        enemigoPapa.render(batch);
-        //System.out.println(checarColisiones());
-        for (int i = 0; i < itemPlayera.size(); i++) {
-            if(checarColisiones(itemPlayera.get(i)) == false){
-                itemPlayera.get(i).render(batch);
-            }else if(checarColisiones(itemPlayera.get(i)) == true){
-                itemPlayera.get(i).setX(10000);
-                contador++;
-            }
-
-        }
-        if(contador == 5){
-
-        }
-        batch.end();
 
         // Dibuja el HUD
         batch.setProjectionMatrix(camaraHUD.combined);
