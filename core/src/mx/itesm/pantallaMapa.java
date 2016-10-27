@@ -167,12 +167,12 @@ public class pantallaMapa implements Screen {
         //Cargar mapa
         manager.setLoader(TiledMap.class,
                 new TmxMapLoader(new InternalFileHandleResolver()));
-        manager.load("mapa3.tmx", TiledMap.class);
+        manager.load("mapa4.tmx", TiledMap.class);
 
         //Cargar personaje
         manager.load("DUDE_camina1.png", Texture.class);
         manager.finishLoading(); //Bloquea hasta que carga el mapa
-        mapa= manager.get("mapa3.tmx");
+        mapa= manager.get("mapa4.tmx");
         texturaJugador= manager.get("DUDE_camina1.png");
 
         //Crea el objeto que dibujara el mapa
