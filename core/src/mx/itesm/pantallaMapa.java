@@ -26,6 +26,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -38,9 +40,14 @@ public class pantallaMapa implements Screen {
     public static final int ANCHO_CAMARA = 1280;
     public static final int ALTO_CAMARA = 800;
 
+    private int contador = 0;
+    private Texto texto;
+
     //Declaramos la camara
     private OrthographicCamera camara;
     private Viewport vista;
+
+    private Random random;
 
     // HUD. Los componentes en la pantalla que no se mueven
     private OrthographicCamera camaraHUD; // Cámara fija
@@ -82,7 +89,7 @@ public class pantallaMapa implements Screen {
 
     //Item Playera
     private Texture texturaItemPlayera;
-    private Item itemPlayera;
+    private ArrayList<Item> itemPlayera;
 
 
     public pantallaMapa(Juego juego) {
@@ -91,10 +98,12 @@ public class pantallaMapa implements Screen {
 
     @Override
     public void show() {
+        random = new Random();
         inicializarCamara();
         crearEscena();
         cargarMapa(); //nuevo
-
+        texto = new Texto();
+        itemPlayera = new ArrayList<Item>();
         //crearPersonaje();
         escena = new Stage();
         crearPad();
@@ -172,9 +181,7 @@ public class pantallaMapa implements Screen {
 
         //Cargar personaje
         manager.load("DUDE_camina1.png", Texture.class);
-        manager.load("Maceta.png", Texture.class);
-        manager.load("Playera0.png", Texture.class);
-
+        manager.load("Playera.png",Texture.class);
         manager.finishLoading(); //Bloquea hasta que carga el mapa
         mapa= manager.get("mapa4.tmx");
         texturaJugador= manager.get("DUDE_camina1.png");
@@ -187,12 +194,14 @@ public class pantallaMapa implements Screen {
         jugador = new Personaje(texturaJugador);
 
         //enemigo
+        manager.load("Maceta.png", Texture.class);
         texturaEnemigoPapa=manager.get("Maceta.png");
         enemigoPapa= new Enemigo(texturaEnemigoPapa);
 
         //Item
-        texturaItemPlayera= manager.get("Playera0.png");
-        itemPlayera= new Item(texturaItemPlayera,500,500);
+        manager.load("Maceta.png", Texture.class);
+        texturaItemPlayera= manager.get("Playera.png");
+
 
 
     }
@@ -224,6 +233,14 @@ public class pantallaMapa implements Screen {
 
         batch.setProjectionMatrix(camara.combined);
 
+        if(random.nextInt(1000) <50 && itemPlayera.size()<=5){
+            itemPlayera.add(new Item(texturaItemPlayera,random.nextInt(1000),random.nextInt(700)));
+
+
+        }
+
+
+
         float xActual = jugador.getX();
         float yActual = jugador.getY();
 
@@ -232,6 +249,8 @@ public class pantallaMapa implements Screen {
 
         enemigoPapa.setY(enemigoPapa.getY() + 1 );
         enemigoPapa.setX(enemigoPapa.getX() + 2);
+
+
 
         if(xActual == jugador.getX() && yActual == jugador.getY()){
             jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
@@ -249,14 +268,37 @@ public class pantallaMapa implements Screen {
         rendererMapa.setView(camara);
         rendererMapa.render();
         batch.begin();
+        texto.mostrarMensaje(batch, "Score: " + contador, 100, 750);
         jugador.render(batch);
         enemigoPapa.render(batch);
-        itemPlayera.render(batch);
+        //System.out.println(checarColisiones());
+        for (int i = 0; i < itemPlayera.size(); i++) {
+            if(checarColisiones(itemPlayera.get(i)) == false){
+                itemPlayera.get(i).render(batch);
+            }else if(checarColisiones(itemPlayera.get(i)) == true){
+                itemPlayera.get(i).setX(10000);
+                contador++;
+            }
+
+        }
+        if(contador == 5){
+
+        }
         batch.end();
 
         // Dibuja el HUD
         batch.setProjectionMatrix(camaraHUD.combined);
         escena.draw();
+    }
+
+    private boolean checarColisiones(Item item) {
+        if((item.getX() + 50 >= jugador.getX()
+                && item.getX() -50 <= jugador.getX())
+                && (item.getY() +50 >= jugador.getY()
+                && item.getY() -50 <= jugador.getY())){
+            return true;
+        }
+        return false;
     }
 
     @Override

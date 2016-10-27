@@ -18,6 +18,18 @@ public class Item {
 
         }
 
+        public float getX(){
+            return this.sprite.getX();
+        }
+
+        public float getY(){
+            return this.sprite.getY();
+        }
+
+        public void setX(float x){
+            this.sprite.setX(x);
+        }
+
         public Item(Texture textura, float x, float y) {
             this(textura);
             sprite.setPosition(x, y);
