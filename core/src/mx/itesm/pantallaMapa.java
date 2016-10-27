@@ -172,6 +172,9 @@ public class pantallaMapa implements Screen {
 
         //Cargar personaje
         manager.load("DUDE_camina1.png", Texture.class);
+        manager.load("Maceta.png", Texture.class);
+        manager.load("Playera0.png", Texture.class);
+
         manager.finishLoading(); //Bloquea hasta que carga el mapa
         mapa= manager.get("mapa4.tmx");
         texturaJugador= manager.get("DUDE_camina1.png");
@@ -184,13 +187,11 @@ public class pantallaMapa implements Screen {
         jugador = new Personaje(texturaJugador);
 
         //enemigo
-        manager.load("Maceta.png", Texture.class);
         texturaEnemigoPapa=manager.get("Maceta.png");
         enemigoPapa= new Enemigo(texturaEnemigoPapa);
 
         //Item
-        manager.load("Maceta.png", Texture.class);
-        texturaItemPlayera= manager.get("Maceta.png");
+        texturaItemPlayera= manager.get("Playera0.png");
         itemPlayera= new Item(texturaItemPlayera,500,500);
 
 
