@@ -44,12 +44,11 @@ public class Personaje {
         TextureRegion texturaCompleta = new TextureRegion(textura);
 
         // La divide en 4 frames de 32x64 (ver marioSprite.png)
-        // DUDE_camina 266x143 y lo dividimos en 5 frames de 45x143
-        TextureRegion[][] texturaJugador = texturaCompleta.split(45,143);
+        TextureRegion[][] texturaJugador = texturaCompleta.split(53,143);
 
         // Crea la animación con tiempo de 0.25 segundos entre frames.
-        animacion = new Animation(0.25f,texturaJugador[0][1], texturaJugador[0][2],
-                texturaJugador[0][3], texturaJugador[0][4]);
+        animacion = new Animation(0.25f,texturaJugador[0][4], texturaJugador[0][3],
+                texturaJugador[0][2], texturaJugador[0][1]);
 
         // Animación infinita
         animacion.setPlayMode(Animation.PlayMode.LOOP);
@@ -67,32 +66,19 @@ public class Personaje {
         // Dibuja el personaje dependiendo del estadoMovimiento
         switch (estadoMovimiento) {
             case MOV_DERECHA:
+            case MOV_IZQUIERDA:
                 timerAnimacion += Gdx.graphics.getDeltaTime();
                 TextureRegion region = animacion.getKeyFrame(timerAnimacion);
-                if (estadoMovimiento==EstadoMovimiento.MOV_DERECHA) {
+                if (estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
                     if (!region.isFlipX()) {
-                        region.flip(false,true);
+                        region.flip(true,false);
                     }
                 } else {
                     if (region.isFlipX()) {
-                        region.flip(false,true);
+                        region.flip(true,false);
                     }
                 }
                 batch.draw(region,sprite.getX(),sprite.getY());
-                break;
-            case MOV_IZQUIERDA:
-                timerAnimacion += Gdx.graphics.getDeltaTime();
-                TextureRegion region1 = animacion.getKeyFrame(timerAnimacion);
-                if (estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
-                    if (!region1.isFlipX()) {
-                        region1.flip(true,false);
-                    }
-                } else {
-                    if (region1.isFlipX()) {
-                        region1.flip(true,false);
-                    }
-                }
-                batch.draw(region1,sprite.getX(),sprite.getY());
                 break;
             case MOV_ARRIBA:
             case MOV_ABAJO:
@@ -147,7 +133,7 @@ public class Personaje {
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(x, y);
             if (celdaDerecha != null) {
                 Object tipo = (String) celdaDerecha.getTile().getProperties().get("tipo");
-                if (!"pared".equals(tipo)) {
+                if (!"paredes".equals(tipo)) {
                     celdaDerecha = null;// Puede pasar
                 }
             }
@@ -169,7 +155,7 @@ public class Personaje {
             TiledMapTileLayer.Cell celdaIzquierda = capa.getCell(xIzq, y);
             if (celdaIzquierda != null) {
                 Object tipo = (String) celdaIzquierda.getTile().getProperties().get("tipo");
-                if (!"pared".equals(tipo)) {
+                if (!"paredes".equals(tipo)) {
                     celdaIzquierda = null;  // Puede pasar
                 }
             }
