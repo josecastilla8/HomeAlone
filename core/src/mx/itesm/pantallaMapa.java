@@ -74,11 +74,14 @@ public class pantallaMapa implements Screen {
     //Enemigo
     private Texture texturaEnemigoPapa;
     private Enemigo enemigoPapa;
-    Random randomX;
-    Random randomY;
+    private Random randomX;
+    private Random randomY;
     int rdmX;
     int rdmY;
 
+    //Item Playera
+    private Texture texturaItemPlayera;
+    private Item itemPlayera;
 
 
     public pantallaMapa(Juego juego) {
@@ -184,17 +187,14 @@ public class pantallaMapa implements Screen {
         texturaEnemigoPapa=manager.get("Maceta.png");
         enemigoPapa= new Enemigo(texturaEnemigoPapa);
 
+        //Item
+        manager.load("Maceta.png", Texture.class);
+        texturaItemPlayera= manager.get("Maceta.png");
+        itemPlayera= new Item(texturaItemPlayera,500,500);
+
 
     }
 
-    //private void inicializarCamara() {
-      //  camara= new OrthographicCamera(1280, 800);
-        //camara.position.set(1280/2, 800/2, 0);
-        //camara.update();
-        //vista= new StretchViewport(1280, 800, camara);
-
-
-    //}
 
     private void inicializarCamara() {
         camara = new OrthographicCamera(ANCHO_CAMARA, ALTO_CAMARA);
@@ -249,6 +249,7 @@ public class pantallaMapa implements Screen {
         batch.begin();
         jugador.render(batch);
         enemigoPapa.render(batch);
+        itemPlayera.render(batch);
         batch.end();
 
         // Dibuja el HUD
@@ -281,6 +282,8 @@ public class pantallaMapa implements Screen {
     @Override
     public void dispose() {
         texturaJugador.dispose();
+        texturaItemPlayera.dispose();
+        texturaEnemigoPapa.dispose();
         mapa.dispose();
     }
 

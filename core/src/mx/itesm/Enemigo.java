@@ -21,8 +21,8 @@ public class Enemigo {
     private EstadoMovimiento estadoMovimiento=EstadoMovimiento.INICIANDO;
 
     public Enemigo(Texture textura) {
-
         sprite = new Sprite(textura);
+        sprite.setPosition(200, 200);
     }
 
     public Enemigo(Texture textura, float x, float y) {
