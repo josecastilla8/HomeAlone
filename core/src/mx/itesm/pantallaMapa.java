@@ -26,6 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import java.util.Random;
 
 /**
  * Created by Javier on 22/09/2016.
@@ -69,6 +70,15 @@ public class pantallaMapa implements Screen {
     //Personaje
     private Texture texturaPersonaje;
     private Personaje dude;
+
+    //Enemigo
+    private Texture texturaEnemigoPapa;
+    private Enemigo enemigoPapa;
+    Random randomX;
+    Random randomY;
+    int rdmX;
+    int rdmY;
+
 
 
     public pantallaMapa(Juego juego) {
@@ -168,6 +178,13 @@ public class pantallaMapa implements Screen {
 
         //Dude
         jugador = new Personaje(texturaJugador);
+
+        //enemigo
+        manager.load("Maceta.png", Texture.class);
+        texturaEnemigoPapa=manager.get("Maceta.png");
+        enemigoPapa= new Enemigo(texturaEnemigoPapa);
+
+
     }
 
     //private void inicializarCamara() {
@@ -195,6 +212,11 @@ public class pantallaMapa implements Screen {
     @Override
     public void render(float delta) {
 
+        randomY= new Random();
+        randomX= new Random();
+        rdmX= randomX.nextInt();
+        rdmY= randomY.nextInt();
+
         Gdx.gl.glClearColor(1,1,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -205,6 +227,9 @@ public class pantallaMapa implements Screen {
 
         jugador.setY(jugador.getY() + pad.getKnobPercentY()*5);
         jugador.setX(jugador.getX() + pad.getKnobPercentX()*5);
+
+        enemigoPapa.setY(enemigoPapa.getY() + 1 );
+        enemigoPapa.setX(enemigoPapa.getX() + 2);
 
         if(xActual == jugador.getX() && yActual == jugador.getY()){
             jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
@@ -223,6 +248,7 @@ public class pantallaMapa implements Screen {
         rendererMapa.render();
         batch.begin();
         jugador.render(batch);
+        enemigoPapa.render(batch);
         batch.end();
 
         // Dibuja el HUD
