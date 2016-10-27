@@ -47,7 +47,7 @@ public class Personaje {
         TextureRegion[][] texturaJugador = texturaCompleta.split(53,143);
 
         // Crea la animación con tiempo de 0.25 segundos entre frames.
-        animacion = new Animation(0.25f,texturaJugador[0][4], texturaJugador[0][3],
+        animacion = new Animation(0.25f, texturaJugador[0][3],
                 texturaJugador[0][2], texturaJugador[0][1]);
 
         // Animación infinita
