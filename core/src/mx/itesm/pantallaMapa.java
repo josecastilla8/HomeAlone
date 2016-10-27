@@ -43,6 +43,7 @@ public class pantallaMapa implements Screen {
 
     private int contador = 0;
     private Texto texto;
+    private Texto vidas;
 
     //Declaramos la camara
     private OrthographicCamera camara;
@@ -96,6 +97,9 @@ public class pantallaMapa implements Screen {
     private Fondo fondoFinalGano;
     private Texture texturaFinalPierde;
     private Fondo fondoFinalPierde;
+    private int contadorvidas = 100;
+    private Texture texturaBtnAtras;
+    private Stage escena2;
 
     public pantallaMapa(Juego juego) {
         this.juego= juego;
@@ -110,10 +114,27 @@ public class pantallaMapa implements Screen {
         texturaFinalPierde = new Texture("Pantalla Loser.png");
         fondoFinalPierde = new Fondo(texturaFinalPierde);
 
+        texturaBtnAtras= new Texture("botonback.png");
+        TextureRegionDrawable trBtnJugador = new TextureRegionDrawable(new TextureRegion(texturaBtnAtras));
+        ImageButton btnJugar = new ImageButton(trBtnJugador);
+        btnJugar.setPosition(0,0);
+
+        escena2 = new Stage();
+        btnJugar.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x,float y){
+                //Gdx.app.log("clicked","TAP sobre el botón de jugar");
+                juego.setScreen(new MenuPrincipal(juego));
+            }
+        });
+
+        escena2.addActor(btnJugar);
+
         inicializarCamara();
         crearEscena();
         cargarMapa(); //nuevo
         texto = new Texto();
+        vidas = new Texto();
         itemPlayera = new ArrayList<Item>();
 
         //crearPersonaje();
@@ -194,6 +215,7 @@ public class pantallaMapa implements Screen {
         //Cargar personaje
         manager.load("DUDE_camina1.png", Texture.class);
         manager.load("Playera.png",Texture.class);
+        manager.load("Papa_sprite.png", Texture.class);
         manager.finishLoading(); //Bloquea hasta que carga el mapa
         mapa= manager.get("mapa4.tmx");
         texturaJugador= manager.get("DUDE_camina1.png");
@@ -206,8 +228,8 @@ public class pantallaMapa implements Screen {
         jugador = new Personaje(texturaJugador);
 
         //enemigo
-        manager.load("Maceta.png", Texture.class);
-        texturaEnemigoPapa=manager.get("Maceta.png");
+
+        texturaEnemigoPapa=manager.get("Papa_sprite.png");
         enemigoPapa= new Enemigo(texturaEnemigoPapa);
 
         //Item
@@ -259,11 +281,22 @@ public class pantallaMapa implements Screen {
         //0 - Jugando, 1 - Gano, 2- Perdio, 3 - Pausa
         switch (this.estadoJuego){
             case 0:
+                Gdx.input.setInputProcessor(escena);
                 jugador.setY(jugador.getY() + pad.getKnobPercentY()*5);
                 jugador.setX(jugador.getX() + pad.getKnobPercentX()*5);
 
-                enemigoPapa.setY(enemigoPapa.getY() + 1 );
-                enemigoPapa.setX(enemigoPapa.getX() + 2);
+                if(random.nextInt(100)<20){
+                    if(enemigoPapa.getX()<jugador.getX()){
+                        enemigoPapa.setX(enemigoPapa.getX()+3);
+                    }if(enemigoPapa.getX()>jugador.getX()){
+                        enemigoPapa.setX(enemigoPapa.getX()-3);
+                    }if(enemigoPapa.getY()<jugador.getY()){
+                        enemigoPapa.setY(enemigoPapa.getY()+3);
+                    }if(enemigoPapa.getY()>jugador.getY()){
+                        enemigoPapa.setY(enemigoPapa.getY()-3);
+                    }
+                }
+
 
 
 
@@ -284,8 +317,12 @@ public class pantallaMapa implements Screen {
                 rendererMapa.render();
                 batch.begin();
                 texto.mostrarMensaje(batch, "Score: " + contador, 100, 750);
+                vidas.mostrarMensaje(batch, "Vidas: " + contadorvidas, 750,750);
                 jugador.render(batch);
                 enemigoPapa.render(batch);
+                if(papaChocoContigo()){
+                    contadorvidas--;
+                }
                 //System.out.println(checarColisiones());
                 for (int i = 0; i < itemPlayera.size(); i++) {
                     if(checarColisiones(itemPlayera.get(i)) == false){
@@ -296,28 +333,48 @@ public class pantallaMapa implements Screen {
                     }
 
                 }
+                if(contadorvidas==0){
+                    this.estadoJuego = 2;
+                }
                 if(contador == 5){
                     this.estadoJuego = 1;
                 }
                 batch.end();
-
+                escena.draw();
+                break;
             case 1:
+                Gdx.input.setInputProcessor(escena2);
                 batch.begin();
                 fondoFinalGano.render(batch);
                 batch.end();
+                escena2.draw();
+                break;
             case 2:
+                Gdx.input.setInputProcessor(escena2);
                 batch.begin();
                 fondoFinalPierde.render(batch);
                 batch.end();
+                escena2.draw();
+                break;
             default:
                 break;
         }
 
-
+        //System.out.println(estadoJuego);
 
         // Dibuja el HUD
         batch.setProjectionMatrix(camaraHUD.combined);
-        escena.draw();
+
+    }
+
+    private boolean papaChocoContigo() {
+        if((enemigoPapa.getX() + 50 >= jugador.getX()
+                && enemigoPapa.getX() -50 <= jugador.getX())
+                && (enemigoPapa.getY() +50 >= jugador.getY()
+                && enemigoPapa.getY() -50 <= jugador.getY())){
+            return true;
+        }
+        return false;
     }
 
     private boolean checarColisiones(Item item) {

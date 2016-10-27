@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -26,6 +27,8 @@ public class PantallaJuego implements Screen {
     private Stage escena1;
     private Texture texturaBtnBack;
     private Personaje personaje;
+    private Texture texturaBtnAtras;
+    private Stage escena2;
 
     public PantallaJuego(Juego juego) {
         this.juego = juego;
@@ -40,6 +43,8 @@ public class PantallaJuego implements Screen {
         fondo = new Fondo(fondoJuegoTextura);
         batch = new SpriteBatch();
         Personaje Personaje;
+
+
 
         //Boton
         texturaBtnBack = new Texture("botonback.png");
