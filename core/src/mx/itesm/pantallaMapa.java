@@ -31,6 +31,7 @@ import java.util.Random;
 /**
  * Created by Javier on 22/09/2016.
  */
+//Comentario
 public class pantallaMapa implements Screen {
 
     public static final int ANCHO_MAPA = 1280;
