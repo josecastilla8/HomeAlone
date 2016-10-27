@@ -256,7 +256,7 @@ public class pantallaMapa implements Screen {
 
     @Override
     public void render(float delta) {
-
+        jugador.actualizar(mapa);
         randomY= new Random();
         randomX= new Random();
         rdmX= randomX.nextInt();

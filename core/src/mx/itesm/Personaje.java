@@ -107,7 +107,7 @@ public class Personaje {
 
     private void recolectarObjetos(TiledMap mapa) {
         // Revisar si está sobre una moneda (pies)
-        TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(0);
+        TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(6);
         int x = (int)(sprite.getX()/32);
         int y = (int)(sprite.getY()/32);
         TiledMapTileLayer.Cell celda = capa.getCell(x,y);
@@ -120,19 +120,33 @@ public class Personaje {
         }
     }
 
+    public void actualizar(TiledMap mapa) {
+        switch (estadoMovimiento) {
+            case MOV_DERECHA:
+            case MOV_IZQUIERDA:
+                moverHorizontal(mapa);
+                break;
+        }
+    }
+
     private void moverHorizontal(TiledMap mapa) {
+        Gdx.app.log("Mover horizontal ","Entró " );
         // Obtiene la primer capa del mapa (en este caso es la única)
-        TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(0);
+        TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(6);
         // Ejecutar movimiento horizontal
         float nuevaX = sprite.getX();
         // ¿Quiere ir a la Derecha?
         if ( estadoMovimiento==EstadoMovimiento.MOV_DERECHA) {
+
             // Obtiene el bloque del lado derecho. Asigna null si puede pasar.
             int x = (int) ((sprite.getX() + 32) / 32);   // Convierte coordenadas del mundo en coordenadas del mapa
             int y = (int) (sprite.getY() / 32);
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(x, y);
+            Gdx.app.log("Mover horizontal ","Calculando celda " + x + "," + y);
             if (celdaDerecha != null) {
+
                 Object tipo = (String) celdaDerecha.getTile().getProperties().get("tipo");
+                Gdx.app.log("Mover horizontal ","Hay celda derecha " + tipo);
                 if (!"paredes".equals(tipo)) {
                     celdaDerecha = null;// Puede pasar
                 }
@@ -145,6 +159,8 @@ public class Personaje {
                     sprite.setX(nuevaX);
                     //probarCaida(mapa);
                 }
+            }else{
+                Gdx.app.log("Mover horizonta","No se puede mover");
             }
         }
         // ¿Quiere ir a la izquierda?
