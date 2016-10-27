@@ -200,8 +200,25 @@ public class pantallaMapa implements Screen {
 
         batch.setProjectionMatrix(camara.combined);
 
+        float xActual = jugador.getX();
+        float yActual = jugador.getY();
+
         jugador.setY(jugador.getY() + pad.getKnobPercentY()*5);
         jugador.setX(jugador.getX() + pad.getKnobPercentX()*5);
+
+        if(xActual == jugador.getX() && yActual == jugador.getY()){
+            jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+        }else if(xActual > jugador.getX() && yActual == jugador.getY()){
+            jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
+        }else if(xActual < jugador.getX() && yActual == jugador.getY()){
+            jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
+        }
+
+
+
+
+
+
         rendererMapa.setView(camara);
         rendererMapa.render();
         batch.begin();

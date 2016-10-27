@@ -31,27 +31,25 @@ public class Personaje {
     private float timerAnimacion;   // tiempo para calcular el frame
 
     private EstadoMovimiento estadoMovimiento=EstadoMovimiento.INICIANDO;
-    private TextureRegion texturaCompleta;
-    private TextureRegion texturaCaminata;
+
 
     /*
     Constructor del personaje, recibe una imagen con varios frames, (ver imagen marioSprite.png 128x64, cada tile 32x64)
      */
 
-    public Personaje(Texture textura, Texture textura2) {
+    public Personaje(Texture textura) {
         //this.sonidoItem = sonidoItem;
 
         // Lee la textura como región
-        texturaCompleta = new TextureRegion(textura);
-        texturaCaminata = new TextureRegion(textura2);
+        TextureRegion texturaCompleta = new TextureRegion(textura);
 
         // La divide en 4 frames de 32x64 (ver marioSprite.png)
-        TextureRegion[][] texturaJugador = texturaCaminata.split(55,143);
-        TextureRegion[][] texturaC = texturaCompleta.split(39,143);
+        // DUDE_camina 266x143 y lo dividimos en 5 frames de 45x143
+        TextureRegion[][] texturaJugador = texturaCompleta.split(45,143);
 
         // Crea la animación con tiempo de 0.25 segundos entre frames.
-        animacion = new Animation(0.25f, texturaJugador[0][3],
-                texturaJugador[0][2], texturaJugador[0][1]);
+        animacion = new Animation(0.25f,texturaJugador[0][1], texturaJugador[0][2],
+                texturaJugador[0][3], texturaJugador[0][4]);
 
         // Animación infinita
         animacion.setPlayMode(Animation.PlayMode.LOOP);
@@ -60,7 +58,7 @@ public class Personaje {
         timerAnimacion = 0;
 
         // Crea el sprite con el personaje quieto (idle)
-        sprite = new Sprite(texturaC[0][0]);    // QUIETO
+        sprite = new Sprite(texturaJugador[0][0]);    // QUIETO
         sprite.setPosition(300,400);    // Posición inicial
     }
 
@@ -69,33 +67,40 @@ public class Personaje {
         // Dibuja el personaje dependiendo del estadoMovimiento
         switch (estadoMovimiento) {
             case MOV_DERECHA:
-            case MOV_IZQUIERDA:
-                this.setTextura(texturaCaminata);
                 timerAnimacion += Gdx.graphics.getDeltaTime();
                 TextureRegion region = animacion.getKeyFrame(timerAnimacion);
-                if (estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
+                if (estadoMovimiento==EstadoMovimiento.MOV_DERECHA) {
                     if (!region.isFlipX()) {
-                        region.flip(true,false);
+                        region.flip(false,true);
                     }
                 } else {
                     if (region.isFlipX()) {
-                        region.flip(true,false);
+                        region.flip(false,true);
                     }
                 }
                 batch.draw(region,sprite.getX(),sprite.getY());
                 break;
+            case MOV_IZQUIERDA:
+                timerAnimacion += Gdx.graphics.getDeltaTime();
+                TextureRegion region1 = animacion.getKeyFrame(timerAnimacion);
+                if (estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
+                    if (!region1.isFlipX()) {
+                        region1.flip(true,false);
+                    }
+                } else {
+                    if (region1.isFlipX()) {
+                        region1.flip(true,false);
+                    }
+                }
+                batch.draw(region1,sprite.getX(),sprite.getY());
+                break;
             case MOV_ARRIBA:
             case MOV_ABAJO:
             case QUIETO:
-                this.setTextura(texturaCompleta);
             case INICIANDO:
                 sprite.draw(batch); // Dibuja el sprite
                 break;
         }
-    }
-
-    private void setTextura(TextureRegion tx) {
-        this.sprite = new Sprite(tx);
     }
 
     public void setX(float x){
