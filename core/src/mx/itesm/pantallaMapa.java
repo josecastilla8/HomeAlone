@@ -213,12 +213,12 @@ public class pantallaMapa implements Screen {
         manager.load("mapa4.tmx", TiledMap.class);
 
         //Cargar personaje
-        manager.load("DUDE_camina1.png", Texture.class);
+        manager.load("DUDE_camina.png", Texture.class);
         manager.load("Playera.png",Texture.class);
         manager.load("Papa_sprite.png", Texture.class);
         manager.finishLoading(); //Bloquea hasta que carga el mapa
         mapa= manager.get("mapa4.tmx");
-        texturaJugador= manager.get("DUDE_camina1.png");
+        texturaJugador= manager.get("DUDE_camina.png");
 
         //Crea el objeto que dibujara el mapa
         rendererMapa = new OrthogonalTiledMapRenderer(mapa, batch);
