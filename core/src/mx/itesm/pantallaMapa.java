@@ -43,7 +43,7 @@ public class pantallaMapa implements Screen {
 
     private int contador = 0;
     private Texto texto;
-    private Texto vidas;
+    private Texto vida;
 
     //Declaramos la camara
     private OrthographicCamera camara;
@@ -68,7 +68,6 @@ public class pantallaMapa implements Screen {
     //SpriteBatch sirve para administrar los trazos
     private SpriteBatch batch;
     private final Juego juego;
-    //private AssetManager manager;
     // *****************
 
     //MAPA
@@ -84,10 +83,6 @@ public class pantallaMapa implements Screen {
     //Enemigo
     private Texture texturaEnemigoPapa;
     private Enemigo enemigoPapa;
-    private Random randomX;
-    private Random randomY;
-    int rdmX;
-    int rdmY;
 
     //Item Playera
     private Texture texturaItemPlayera;
@@ -134,7 +129,7 @@ public class pantallaMapa implements Screen {
         crearEscena();
         cargarMapa(); //nuevo
         texto = new Texto();
-        vidas = new Texto();
+        vida = new Texto();
         itemPlayera = new ArrayList<Item>();
 
         //crearPersonaje();
@@ -152,16 +147,6 @@ public class pantallaMapa implements Screen {
         skin.add("touchBackground", new Texture("touchBackground.png"));
         skin.add("touchKnob", new Texture("touchKnob.png"));
 
-
-        //Create camera
-        //Create a touchpad skin
-
-        //Create Drawable's from TouchPad skin
-
-
-        //Create a Stage and add TouchPad
-
-        //Create block sprite
 
         // Carcaterísticas del pad
         Touchpad.TouchpadStyle tpEstilo = new Touchpad.TouchpadStyle();
@@ -190,14 +175,11 @@ public class pantallaMapa implements Screen {
         escena.addActor(pad);
         pad.setColor(1, 1, 1, 0.4f);
 
-
-
         Gdx.input.setInputProcessor(escena);
     }
 
     private void crearEscena() {
         batch= new SpriteBatch();
-
         escena= new Stage();
         escena.setViewport(vistaHUD);
         crearPad();
@@ -228,15 +210,12 @@ public class pantallaMapa implements Screen {
         jugador = new Personaje(texturaJugador);
 
         //enemigo
-
         texturaEnemigoPapa=manager.get("Papa_sprite.png");
         enemigoPapa= new Enemigo(texturaEnemigoPapa);
 
         //Item
         manager.load("Maceta.png", Texture.class);
         texturaItemPlayera= manager.get("Playera.png");
-
-
 
     }
 
@@ -257,10 +236,6 @@ public class pantallaMapa implements Screen {
     @Override
     public void render(float delta) {
         jugador.actualizar(mapa);
-        randomY= new Random();
-        randomX= new Random();
-        rdmX= randomX.nextInt();
-        rdmY= randomY.nextInt();
 
         Gdx.gl.glClearColor(1,1,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -310,14 +285,12 @@ public class pantallaMapa implements Screen {
 
 
 
-
-
-
                 rendererMapa.setView(camara);
                 rendererMapa.render();
+
                 batch.begin();
                 texto.mostrarMensaje(batch, "Score: " + contador, 100, 750);
-                vidas.mostrarMensaje(batch, "Vidas: " + contadorvidas, 750,750);
+                vida.mostrarMensaje(batch, "Vida: " + contadorvidas, 750,750);
                 jugador.render(batch);
                 enemigoPapa.render(batch);
                 if(papaChocoContigo()){
@@ -360,7 +333,6 @@ public class pantallaMapa implements Screen {
                 break;
         }
 
-        //System.out.println(estadoJuego);
 
         // Dibuja el HUD
         batch.setProjectionMatrix(camaraHUD.combined);
