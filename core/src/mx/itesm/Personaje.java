@@ -58,7 +58,7 @@ public class Personaje {
 
         // Crea el sprite con el personaje quieto (idle)
         sprite = new Sprite(texturaJugador[0][0]);    // QUIETO
-        sprite.setPosition(300,400);    // Posición inicial
+        sprite.setPosition(600,200);    // Posición inicial
     }
 
     // Dibuja el personaje
@@ -145,7 +145,7 @@ public class Personaje {
             Gdx.app.log("Mover horizontal ","Calculando celda " + x + "," + y);
             if (celdaDerecha != null) {
 
-                Object tipo = (String) celdaDerecha.getTile().getProperties().get("tipo");
+                Object tipo = celdaDerecha.getTile().getProperties().get("tipo");
                 Gdx.app.log("Mover horizontal ","Hay celda derecha " + tipo);
                 if (!"paredes".equals(tipo)) {
                     celdaDerecha = null;// Puede pasar
@@ -164,11 +164,12 @@ public class Personaje {
             }
         }
         // ¿Quiere ir a la izquierda?
-        if ( estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
+        if (estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
             int xIzq = (int) ((sprite.getX()) / 32);
             int y = (int) (sprite.getY() / 32);
             // Obtiene el bloque del lado izquierdo. Asigna null si puede pasar.
             TiledMapTileLayer.Cell celdaIzquierda = capa.getCell(xIzq, y);
+            Gdx.app.log("Mover izquierda ","Calculando celda " + xIzq + "," + y);
             if (celdaIzquierda != null) {
                 Object tipo = (String) celdaIzquierda.getTile().getProperties().get("tipo");
                 if (!"paredes".equals(tipo)) {
