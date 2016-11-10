@@ -20,9 +20,32 @@ public class Enemigo {
     private Sprite sprite;
     private EstadoMovimiento estadoMovimiento=EstadoMovimiento.INICIANDO;
 
+    // Animación
+    private Animation animacion;    // Caminando
+    private float timerAnimacion;   // tiempo para calcular el frame
+
     public Enemigo(Texture textura) {
-        sprite = new Sprite(textura);
-        sprite.setPosition(200, 200);
+
+        // Lee la textura como región
+        TextureRegion texturaCompleta = new TextureRegion(textura);
+
+        // La divide en 4 frames de 32x64 (ver marioSprite.png)
+        TextureRegion[][] texturaEnemigo = texturaCompleta.split(64,141);
+
+        // Crea la animación con tiempo de 0.25 segundos entre frames.
+        animacion = new Animation(0.25f, texturaEnemigo[0][3],
+                texturaEnemigo[0][2], texturaEnemigo[0][1]);
+
+        // Animación infinita
+        animacion.setPlayMode(Animation.PlayMode.LOOP);
+
+        // Inicia el timer que contará tiempo para saber qué frame se dibuja
+        timerAnimacion = 0;
+
+        // Crea el sprite con el personaje quieto (idle)
+        sprite = new Sprite(texturaEnemigo[0][0]);    // QUIETO
+        sprite.setPosition(200,200);    // Posición inicial
+
     }
 
     public Enemigo(Texture textura, float x, float y) {
@@ -50,6 +73,8 @@ public class Enemigo {
     public float getY(){
         return this.sprite.getY();
     }
+
+
     public void render(SpriteBatch batch) {
         // Dibuja el personaje dependiendo del estadoMovimiento
         switch (estadoMovimiento) {
@@ -57,6 +82,19 @@ public class Enemigo {
             case MOV_IZQUIERDA:
             case MOV_ARRIBA:
             case MOV_ABAJO:
+                timerAnimacion += Gdx.graphics.getDeltaTime();
+                TextureRegion region = animacion.getKeyFrame(timerAnimacion);
+                if (estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
+                    if (!region.isFlipX()) {
+                        region.flip(true,false);
+                    }
+                } else {
+                    if (region.isFlipX()) {
+                        region.flip(true,false);
+                    }
+                }
+                batch.draw(region,sprite.getX(),sprite.getY());
+                break;
             case QUIETO:
             case INICIANDO:
                 sprite.draw(batch); // Dibuja el sprite
