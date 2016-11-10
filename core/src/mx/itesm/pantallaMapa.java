@@ -5,8 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -35,7 +33,7 @@ import java.util.Random;
  * Created by Javier on 22/09/2016.
  */
 //Comentario
-public class pantallaMapa implements Screen {
+public class PantallaMapa implements Screen {
 
     public static final int ANCHO_MAPA = 1280;
     public static final int ANCHO_CAMARA = 1280;
@@ -84,30 +82,20 @@ public class pantallaMapa implements Screen {
     private Texture texturaEnemigoPapa;
     private Enemigo enemigoPapa;
 
-    //Gana y Pierde
+    //Item Playera
+    private Texture texturaItemPlayera;
+    private Item playeraItem;
+    private ArrayList<Item> itemPlayera;
     private int estadoJuego = 0;
     private Texture texturaFinalGano;
     private Fondo fondoFinalGano;
     private Texture texturaFinalPierde;
     private Fondo fondoFinalPierde;
-
-    //Vidas
     private int contadorvidas = 100;
-
-
     private Texture texturaBtnAtras;
     private Stage escena2;
 
-    //Item Maceta
-    private Texture texturaItemMaceta;
-
-    //Item Playera
-    private Texture texturaItemPlayera;
-    private ArrayList<Item> itemPlayera;
-
-
-
-    public pantallaMapa(Juego juego) {
+    public PantallaMapa(Juego juego) {
         this.juego= juego;
     }
 
@@ -144,10 +132,11 @@ public class pantallaMapa implements Screen {
         itemPlayera = new ArrayList<Item>();
 
         //crearPersonaje();
-        escena = new Stage();
+        //escena = new Stage();
         crearPad();
-        Gdx.input.setInputProcessor(escena);
+        //Gdx.input.setInputProcessor(escena);
         //Quien procesa los eventos
+        Gdx.gl.glClearColor(1,0,0,1);
 
     }
 
@@ -197,7 +186,9 @@ public class pantallaMapa implements Screen {
     }
 
     private void cargarMapa() {
+        //Ahora son cargados en PantallaCargando
         //manager= new AssetManager();
+        /*
         AssetManager manager= juego.getAssetManager();
 
         //Cargar mapa
@@ -205,30 +196,36 @@ public class pantallaMapa implements Screen {
                 new TmxMapLoader(new InternalFileHandleResolver()));
         manager.load("mapa4.tmx", TiledMap.class);
 
-        //Cargar texturas
+        //Cargar personaje
         manager.load("DUDE_camina.png", Texture.class);
         manager.load("Playera.png",Texture.class);
-        manager.load("Papa_camina.png", Texture.class);
-        manager.load("Maceta.png", Texture.class);
+        manager.load("Papa_sprite.png", Texture.class);
         manager.finishLoading(); //Bloquea hasta que carga el mapa
+        */
 
+        AssetManager manager= juego.getAssetManager();
+
+        //Si ya cargo los assets...
+        mapa= manager.get("mapa4.tmx");
+        texturaJugador= manager.get("DUDE_camina.png");
+        texturaEnemigoPapa= manager.get("Papa_camina.png");
+        texturaItemPlayera= manager.get("Playera.png");
 
         //Crea el objeto que dibujara el mapa
-        mapa= manager.get("mapa4.tmx");
         rendererMapa = new OrthogonalTiledMapRenderer(mapa, batch);
         rendererMapa.setView(camara);
 
-        //Jugador
-        texturaJugador= manager.get("DUDE_camina.png");
+        //Dude
         jugador = new Personaje(texturaJugador);
 
         //enemigo
-        texturaEnemigoPapa=manager.get("Papa_camina.png");
+        //texturaEnemigoPapa=manager.get("Papa_sprite.png");
         enemigoPapa= new Enemigo(texturaEnemigoPapa);
 
-        //Items
-        texturaItemPlayera= manager.get("Playera.png");
-        texturaItemMaceta= manager.get("Maceta.png");
+        //Item
+        //manager.load("Maceta.png", Texture.class);
+        //texturaItemPlayera= manager.get("Playera.png");
+        playeraItem= new Item(texturaItemPlayera);
 
     }
 
@@ -237,13 +234,13 @@ public class pantallaMapa implements Screen {
         camara = new OrthographicCamera(ANCHO_CAMARA, ALTO_CAMARA);
         camara.position.set(ANCHO_CAMARA/2, ALTO_CAMARA /2,0);
         camara.update();
-        vista = new StretchViewport(ANCHO_CAMARA, pantallaMapa.ALTO_CAMARA,camara);
+        vista = new StretchViewport(ANCHO_CAMARA, PantallaMapa.ALTO_CAMARA,camara);
 
         // Cámara para HUD
-        camaraHUD = new OrthographicCamera(ANCHO_CAMARA, pantallaMapa.ALTO_CAMARA);
-        camaraHUD.position.set(ANCHO_CAMARA/2, pantallaMapa.ALTO_CAMARA /2, 0);
+        camaraHUD = new OrthographicCamera(ANCHO_CAMARA, PantallaMapa.ALTO_CAMARA);
+        camaraHUD.position.set(ANCHO_CAMARA/2, PantallaMapa.ALTO_CAMARA /2, 0);
         camaraHUD.update();
-        vistaHUD = new StretchViewport(ANCHO_CAMARA, pantallaMapa.ALTO_CAMARA,camaraHUD);
+        vistaHUD = new StretchViewport(ANCHO_CAMARA, PantallaMapa.ALTO_CAMARA,camaraHUD);
     }
 
     @Override
@@ -397,9 +394,14 @@ public class pantallaMapa implements Screen {
     @Override
     public void dispose() {
         texturaJugador.dispose();
+        mapa.dispose();
         texturaItemPlayera.dispose();
         texturaEnemigoPapa.dispose();
-        mapa.dispose();
+        //Parte actualizada
+        juego.getAssetManager().unload("DUDE_camina.png");
+        juego.getAssetManager().unload("Papa_camina.png");
+        juego.getAssetManager().unload("Playera.png");
+
     }
 
 }
