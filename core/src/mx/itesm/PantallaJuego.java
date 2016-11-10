@@ -49,6 +49,7 @@ public class PantallaJuego implements Screen {
         //Boton
         texturaBtnBack = new Texture("botonback.png");
 
+
         TextureRegionDrawable trdBtnBack = new TextureRegionDrawable(new TextureRegion(texturaBtnBack));
         ImageButton btnBack = new ImageButton(trdBtnBack);
 
