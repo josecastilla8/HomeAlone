@@ -84,17 +84,28 @@ public class pantallaMapa implements Screen {
     private Texture texturaEnemigoPapa;
     private Enemigo enemigoPapa;
 
-    //Item Playera
-    private Texture texturaItemPlayera;
-    private ArrayList<Item> itemPlayera;
+    //Gana y Pierde
     private int estadoJuego = 0;
     private Texture texturaFinalGano;
     private Fondo fondoFinalGano;
     private Texture texturaFinalPierde;
     private Fondo fondoFinalPierde;
+
+    //Vidas
     private int contadorvidas = 100;
+
+
     private Texture texturaBtnAtras;
     private Stage escena2;
+
+    //Item Maceta
+    private Texture texturaItemMaceta;
+
+    //Item Playera
+    private Texture texturaItemPlayera;
+    private ArrayList<Item> itemPlayera;
+
+
 
     public pantallaMapa(Juego juego) {
         this.juego= juego;
@@ -194,28 +205,30 @@ public class pantallaMapa implements Screen {
                 new TmxMapLoader(new InternalFileHandleResolver()));
         manager.load("mapa4.tmx", TiledMap.class);
 
-        //Cargar personaje
+        //Cargar texturas
         manager.load("DUDE_camina.png", Texture.class);
         manager.load("Playera.png",Texture.class);
-        manager.load("Papa_sprite.png", Texture.class);
+        manager.load("Papa_camina.png", Texture.class);
+        manager.load("Maceta.png", Texture.class);
         manager.finishLoading(); //Bloquea hasta que carga el mapa
-        mapa= manager.get("mapa4.tmx");
-        texturaJugador= manager.get("DUDE_camina.png");
+
 
         //Crea el objeto que dibujara el mapa
+        mapa= manager.get("mapa4.tmx");
         rendererMapa = new OrthogonalTiledMapRenderer(mapa, batch);
         rendererMapa.setView(camara);
 
-        //Dude
+        //Jugador
+        texturaJugador= manager.get("DUDE_camina.png");
         jugador = new Personaje(texturaJugador);
 
         //enemigo
-        texturaEnemigoPapa=manager.get("Papa_sprite.png");
+        texturaEnemigoPapa=manager.get("Papa_camina.png");
         enemigoPapa= new Enemigo(texturaEnemigoPapa);
 
-        //Item
-        manager.load("Maceta.png", Texture.class);
+        //Items
         texturaItemPlayera= manager.get("Playera.png");
+        texturaItemMaceta= manager.get("Maceta.png");
 
     }
 
