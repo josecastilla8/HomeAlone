@@ -30,7 +30,7 @@ public class Enemigo {
         TextureRegion texturaCompleta = new TextureRegion(textura);
 
         // La divide en 4 frames de 32x64 (ver marioSprite.png)
-        TextureRegion[][] texturaEnemigo = texturaCompleta.split(64,141);
+        TextureRegion[][] texturaEnemigo = texturaCompleta.split(62,141);
 
         // Crea la animación con tiempo de 0.25 segundos entre frames.
         animacion = new Animation(0.25f, texturaEnemigo[0][3],
@@ -79,25 +79,36 @@ public class Enemigo {
         // Dibuja el personaje dependiendo del estadoMovimiento
         switch (estadoMovimiento) {
             case MOV_DERECHA:
-            case MOV_IZQUIERDA:
-            case MOV_ARRIBA:
-            case MOV_ABAJO:
                 timerAnimacion += Gdx.graphics.getDeltaTime();
                 TextureRegion region = animacion.getKeyFrame(timerAnimacion);
-                if (estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
                     if (!region.isFlipX()) {
                         region.flip(true,false);
                     }
-                } else {
+
+
+            case MOV_IZQUIERDA:
+                timerAnimacion += Gdx.graphics.getDeltaTime();
+                region = animacion.getKeyFrame(timerAnimacion);
                     if (region.isFlipX()) {
                         region.flip(true,false);
                     }
-                }
                 batch.draw(region,sprite.getX(),sprite.getY());
                 break;
+            case MOV_ARRIBA:
+            case MOV_ABAJO:
             case QUIETO:
             case INICIANDO:
-                sprite.draw(batch); // Dibuja el sprite
+                 // Dibuja el sprite
+                //sprite.draw(batch);
+
+                if(sprite.getX()<sprite.getOriginX()) {
+                    estadoMovimiento=estadoMovimiento.MOV_DERECHA;
+
+                }if(sprite.getX()>sprite.getOriginX()){
+                    estadoMovimiento=estadoMovimiento.MOV_IZQUIERDA;
+
+
+                }
                 break;
         }
     }
