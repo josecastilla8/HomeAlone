@@ -26,6 +26,7 @@ public class Enemigo {
 
     public Enemigo(Texture textura) {
 
+
         // Lee la textura como región
         TextureRegion texturaCompleta = new TextureRegion(textura);
 
@@ -89,9 +90,7 @@ public class Enemigo {
             case MOV_IZQUIERDA:
                 timerAnimacion += Gdx.graphics.getDeltaTime();
                 region = animacion.getKeyFrame(timerAnimacion);
-                    if (region.isFlipX()) {
-                        region.flip(true,false);
-                    }
+
                 batch.draw(region,sprite.getX(),sprite.getY());
                 break;
             case MOV_ARRIBA:
@@ -99,16 +98,8 @@ public class Enemigo {
             case QUIETO:
             case INICIANDO:
                  // Dibuja el sprite
-                //sprite.draw(batch);
+                sprite.draw(batch);
 
-                if(sprite.getX()<sprite.getOriginX()) {
-                    estadoMovimiento=estadoMovimiento.MOV_DERECHA;
-
-                }if(sprite.getX()>sprite.getOriginX()){
-                    estadoMovimiento=estadoMovimiento.MOV_IZQUIERDA;
-
-
-                }
                 break;
         }
     }

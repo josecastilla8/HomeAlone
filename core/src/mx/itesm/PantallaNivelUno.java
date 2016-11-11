@@ -280,6 +280,12 @@ public class PantallaNivelUno implements Screen {
                     }
                 }
 
+                if(enemigoPapa.getX()<jugador.getX()){
+                    enemigoPapa.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_IZQUIERDA);
+                }else{
+                    enemigoPapa.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_DERECHA);
+                }
+
 
 
 
