@@ -3,8 +3,6 @@ package mx.itesm;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -58,7 +56,7 @@ public class PantallaCargando implements Screen {
     }
 
 
-    // Estos son los recursos de la pantalla siguiente (PantallaMapa)
+    // Estos son los recursos de la pantalla siguiente (PantallaNivelUno)
     private void cargarRecursos() {
         assetManager.load("mapa4.tmx", TiledMap.class);
         assetManager.load("DUDE_camina.png", Texture.class);
@@ -93,7 +91,7 @@ public class PantallaCargando implements Screen {
     // Revisa cómo va la carga de assets
     private void actualizarCarga() {
         if ( assetManager.update() ) {  // regresa true si ya terminó la carga
-            juego.setScreen(new PantallaMapa(juego));
+            juego.setScreen(new PantallaNivelUno(juego));
         } else {
             // Aún no termina, preguntar cómo va
             float avance = assetManager.getProgress();
