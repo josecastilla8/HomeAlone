@@ -70,6 +70,7 @@ public class PantallaCargando implements Screen {
         assetManager.load("Mama_camina.png", Texture.class);
         assetManager.load("RedBull.png", Texture.class);
         assetManager.load("Bruno_camina.png", Texture.class);
+        assetManager.load("BotonFlecha.png", Texture.class);
 
         //Cargar musica
         assetManager.load("audio/SegundoNivel.mp3", Music.class);

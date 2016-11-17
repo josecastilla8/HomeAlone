@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -96,6 +97,10 @@ public class PantallaNivelUno implements Screen {
     private int contadorvidas = 100;
     private Texture texturaBtnAtras;
     private Stage escena2;
+    private Boton btnFlechaArriba;
+    private Boton btnFlechaDerecha;
+    private Boton btnFlechaIzquierda;
+    private Boton btnFlechaAbajo;
 
     public PantallaNivelUno(Juego juego) {
         this.juego= juego;
@@ -109,6 +114,8 @@ public class PantallaNivelUno implements Screen {
 
         texturaFinalPierde = new Texture("Pantalla Loser.png");
         fondoFinalPierde = new Fondo(texturaFinalPierde);
+
+
 
         texturaBtnAtras= new Texture("botonback.png");
         TextureRegionDrawable trBtnJugador = new TextureRegionDrawable(new TextureRegion(texturaBtnAtras));
@@ -178,7 +185,7 @@ public class PantallaNivelUno implements Screen {
             }
         });
 
-        escena.addActor(pad);
+        //escena.addActor(pad);
         pad.setColor(1, 1, 1, 0.4f);
 
         Gdx.input.setInputProcessor(escena);
@@ -219,6 +226,19 @@ public class PantallaNivelUno implements Screen {
 
         //Audio
         musicaFondo= manager.get("audio/SegundoNivel.mp3");
+        Texture texturaBtnFlechaArriba = manager.get("BotonFlecha.png");
+
+        btnFlechaArriba = new Boton(texturaBtnFlechaArriba);
+        btnFlechaDerecha = new Boton(texturaBtnFlechaArriba);
+        btnFlechaIzquierda = new Boton(texturaBtnFlechaArriba);
+        btnFlechaAbajo = new Boton(texturaBtnFlechaArriba);
+
+
+        btnFlechaArriba.setPosicion(70,200);
+        btnFlechaAbajo.setPosicion(70,50);
+        btnFlechaDerecha.setPosicion(10,125);
+        btnFlechaIzquierda.setPosicion(130,125);
+
 
         musicaFondo.setLooping(true);
         musicaFondo.play();
@@ -253,6 +273,21 @@ public class PantallaNivelUno implements Screen {
         camaraHUD.position.set(ANCHO_CAMARA/2, PantallaNivelUno.ALTO_CAMARA /2, 0);
         camaraHUD.update();
         vistaHUD = new StretchViewport(ANCHO_CAMARA, PantallaNivelUno.ALTO_CAMARA,camaraHUD);
+    }
+
+    public boolean tocando(Boton boton){
+        Vector3 coordenadas = new Vector3();
+        coordenadas.set(Gdx.input.getX(),Gdx.input.getY(),0);
+        camara.unproject(coordenadas);
+        //if(boton.equals(btnFlechaArriba))
+        //System.out.println(coordenadas.toString() + " " + boton.getSprite().getX() + " : " + boton.getSprite().getY());
+        if(Gdx.input.isTouched()){
+            if(coordenadas.x >= boton.getSprite().getX() && coordenadas.x <= boton.getSprite().getX()+boton.getSprite().getWidth()
+                    && coordenadas.y>=boton.getSprite().getY() && coordenadas.y <= boton.getSprite().getY()+boton.getSprite().getHeight()){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -316,12 +351,32 @@ public class PantallaNivelUno implements Screen {
                 rendererMapa.render();
 
                 batch.begin();
+                btnFlechaIzquierda.render(batch);
+                btnFlechaArriba.render(batch);
+                btnFlechaAbajo.render(batch);
+                btnFlechaDerecha.render(batch);
                 texto.mostrarMensaje(batch, "Score: " + contador, 100, 750);
                 vida.mostrarMensaje(batch, "Vida: " + contadorvidas, 750,750);
                 jugador.render(batch);
                 enemigoPapa.render(batch);
                 if(papaChocoContigo()){
                     contadorvidas--;
+                }
+                if(tocando(btnFlechaAbajo)){
+                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ABAJO);
+                    System.out.println("MOVABA");
+                }
+                if(tocando(btnFlechaArriba)){
+                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ARRIBA);
+                    System.out.println("MOVARRI");
+                }
+                if(tocando(btnFlechaDerecha)){
+                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
+                    System.out.println("MOVIZQ");
+                }
+                if(tocando(btnFlechaIzquierda)){
+                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
+                    System.out.println("MOVDER");
                 }
                 //System.out.println(checarColisiones());
                 for (int i = 0; i < itemPlayera.size(); i++) {

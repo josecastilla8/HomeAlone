@@ -196,15 +196,28 @@ public class Personaje {
     }
 
     private void moverVertical(TiledMap mapa) {
-
-        switch (this.estadoMovimiento){
-            case MOV_ABAJO:
-                this.setY(this.getY()-5);
-                break;
-            case MOV_ARRIBA:
-                this.setY(this.getY()+5);
-                break;
+        TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(6);
+        if (estadoMovimiento==EstadoMovimiento.MOV_ARRIBA) {
+            int xIzq = (int) ((sprite.getX()) / 32);
+            int y = (int) (sprite.getY() / 32);
+            // Obtiene el bloque del lado izquierdo. Asigna null si puede pasar.
+            TiledMapTileLayer.Cell celdaIzquierda = capa.getCell(xIzq, y);
+            Gdx.app.log("Mover izquierda ","Calculando celda " + xIzq + "," + y);
+            if (celdaIzquierda != null) {
+                Object tipo = (String) celdaIzquierda.getTile().getProperties().get("tipo");
+                if (!"paredes".equals(tipo)) {
+                    celdaIzquierda = null;  // Puede pasar
+                }
+            }
+            if ( celdaIzquierda==null) {
+                // Prueba que no salga del mundo por la izquierda
+                nuevaX -= VELOCIDAD_X;
+                if (nuevaX >= 0) {
+                    sprite.setX(nuevaX);
+                }
+            }
         }
+
     }
 
 
