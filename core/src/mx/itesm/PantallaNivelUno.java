@@ -332,7 +332,7 @@ public class PantallaNivelUno implements Screen {
             case 1:
                 Gdx.input.setInputProcessor(escena2);
                 batch.begin();
-                fondoFinalGano.render(batch);
+                juego.setScreen(new LoadingNivel2(juego));
                 batch.end();
                 escena2.draw();
                 break;
