@@ -3,6 +3,7 @@ package mx.itesm;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -59,6 +60,9 @@ public class PantallaNivelTres implements Screen {
 
     // Pad
     private Touchpad pad;
+
+    //Musica
+    private Music musicaFondo;
 
     //SpriteBatch sirve para administrar los trazos
     private SpriteBatch batch;
@@ -206,6 +210,12 @@ public class PantallaNivelTres implements Screen {
         texturaEnemigoMama= manager.get("Mama_camina.png");
         texturaItemRedbull= manager.get("RedBull.png");
         texturaEnemigoBruno= manager.get("Bruno_camina.png");
+
+        //Audio
+        musicaFondo= manager.get("audio/SegundoNivel.mp3");
+
+        musicaFondo.setLooping(true);
+        musicaFondo.play();
 
         //Crea el objeto que dibujara el mapa
         rendererMapa = new OrthogonalTiledMapRenderer(mapa, batch);
@@ -476,6 +486,7 @@ public class PantallaNivelTres implements Screen {
         texturaEnemigoPapa.dispose();
         texturaEnemigoMama.dispose();
         texturaEnemigoBruno.dispose();
+        musicaFondo.dispose();
 
 
         //Parte actualizada
