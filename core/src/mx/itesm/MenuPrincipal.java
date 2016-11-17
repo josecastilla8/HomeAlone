@@ -111,7 +111,7 @@ public class MenuPrincipal implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x,float y){
 				Gdx.app.log("clicked","TAP sobre el botón de jugar");
-				juego.setScreen(new PantallaCargando(juego));
+				juego.setScreen(new PantallaCargando(juego,1));
 			}
 		});
 

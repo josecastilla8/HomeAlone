@@ -369,7 +369,7 @@ public class PantallaNivelDos implements Screen {
             case 1:
                 Gdx.input.setInputProcessor(escena2);
                 batch.begin();
-                juego.setScreen(new CargandoNivel3(juego));
+                juego.setScreen(new PantallaCargando(juego,3));
                 batch.end();
                 escena2.draw();
                 break;
@@ -438,13 +438,14 @@ public class PantallaNivelDos implements Screen {
         texturaItemPlayera.dispose();
         texturaEnemigoPapa.dispose();
         texturaEnemigoMama.dispose();
+        texturaItemRedbull.dispose();
         mapa.dispose();
 
         //Parte actualizada
         juego.getAssetManager().unload("DUDE_camina.png");
         juego.getAssetManager().unload("Papa_camina.png");
         juego.getAssetManager().unload("Playera.png");
-
+        juego.getAssetManager().unload("RedBull.png");
         juego.getAssetManager().unload("Mama_camina.png");
 
     }

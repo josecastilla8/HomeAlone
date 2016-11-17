@@ -3,6 +3,8 @@ package mx.itesm;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,10 +31,12 @@ public class PantallaCargando implements Screen {
     private Sprite spriteCargando;
 
     private AssetManager assetManager;
+    private int nivel;
 
-    public PantallaCargando(Juego juego){
+    public PantallaCargando(Juego juego,int nivel){
         this.juego= juego;
         this.assetManager= juego.getAssetManager();
+        this.nivel = nivel;
     }
 
     @Override
@@ -48,6 +52,7 @@ public class PantallaCargando implements Screen {
         assetManager.load("Loading.png", Texture.class);
         assetManager.finishLoading();   // Se bloquea, pero es una sola imagen
         texturaCargando = assetManager.get("Loading.png");
+
         spriteCargando = new Sprite(texturaCargando);
         //spriteCargando.setPosition(1280/2-spriteCargando.getWidth()/2, 800/2-spriteCargando.getHeight()/2);
 
@@ -63,6 +68,11 @@ public class PantallaCargando implements Screen {
         assetManager.load("Papa_camina.png", Texture.class);
         assetManager.load("Playera.png", Texture.class);
         assetManager.load("Mama_camina.png", Texture.class);
+        assetManager.load("RedBull.png", Texture.class);
+        assetManager.load("Bruno_camina.png", Texture.class);
+
+        //Cargar musica
+        assetManager.load("audio/SegundoNivel.mp3", Music.class);
         Gdx.app.log("Cargar recursos", "Cargando mapas");
 
         // Carga música
@@ -91,8 +101,20 @@ public class PantallaCargando implements Screen {
 
     // Revisa cómo va la carga de assets
     private void actualizarCarga() {
+
         if ( assetManager.update() ) {  // regresa true si ya terminó la carga
-            juego.setScreen(new PantallaNivelUno(juego));
+            switch (nivel){
+                case 1:
+                    juego.setScreen(new PantallaNivelUno(juego));
+                    break;
+                case 2:
+                    juego.setScreen(new PantallaNivelDos(juego));
+                    break;
+                case 3:
+                    juego.setScreen(new PantallaNivelTres(juego));
+                    break;
+            }
+
         } else {
             // Aún no termina, preguntar cómo va
             float avance = assetManager.getProgress();

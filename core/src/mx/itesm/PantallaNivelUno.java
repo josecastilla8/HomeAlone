@@ -4,6 +4,7 @@ package mx.itesm;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -60,6 +61,9 @@ public class PantallaNivelUno implements Screen {
 
     // Pad
     private Touchpad pad;
+
+    //Musica
+    private Music musicaFondo;
 
     //SpriteBatch sirve para administrar los trazos
     private SpriteBatch batch;
@@ -163,6 +167,10 @@ public class PantallaNivelUno implements Screen {
                         jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
                     } else if (p.getKnobPercentX() < 0) { // Izquierda
                         jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
+                    }else if(p.getKnobPercentY()>0) {
+                        jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ARRIBA);
+                    }else if(p.getKnobPercentY() < 0){
+                        jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ABAJO);
                     } else {    // Nada
                         jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
                     }
@@ -208,6 +216,12 @@ public class PantallaNivelUno implements Screen {
         texturaJugador= manager.get("DUDE_camina.png");
         texturaEnemigoPapa= manager.get("Papa_camina.png");
         texturaItemPlayera= manager.get("Playera.png");
+
+        //Audio
+        musicaFondo= manager.get("audio/SegundoNivel.mp3");
+
+        musicaFondo.setLooping(true);
+        musicaFondo.play();
 
         //Crea el objeto que dibujara el mapa
         rendererMapa = new OrthogonalTiledMapRenderer(mapa, batch);
@@ -332,7 +346,7 @@ public class PantallaNivelUno implements Screen {
             case 1:
                 Gdx.input.setInputProcessor(escena2);
                 batch.begin();
-                juego.setScreen(new LoadingNivel2(juego));
+                juego.setScreen(new PantallaCargando(juego,2));
                 batch.end();
                 escena2.draw();
                 break;
@@ -401,6 +415,7 @@ public class PantallaNivelUno implements Screen {
         mapa.dispose();
         texturaItemPlayera.dispose();
         texturaEnemigoPapa.dispose();
+        musicaFondo.dispose();
         //Parte actualizada
         juego.getAssetManager().unload("DUDE_camina.png");
         juego.getAssetManager().unload("Papa_camina.png");

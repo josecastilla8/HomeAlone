@@ -475,6 +475,7 @@ public class PantallaNivelTres implements Screen {
         texturaItemPlayera.dispose();
         texturaEnemigoPapa.dispose();
         texturaEnemigoMama.dispose();
+        texturaEnemigoBruno.dispose();
 
 
         //Parte actualizada
@@ -482,6 +483,7 @@ public class PantallaNivelTres implements Screen {
         juego.getAssetManager().unload("Papa_camina.png");
         juego.getAssetManager().unload("Playera.png");
         juego.getAssetManager().unload("Mama_camina.png");
+        juego.getAssetManager().unload("Bruno_camina.png");
 
 
     }
