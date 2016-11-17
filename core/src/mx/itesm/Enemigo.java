@@ -51,6 +51,24 @@ public class Enemigo {
 
     public Enemigo(Texture textura, float x, float y) {
         this(textura);
+        // Lee la textura como región
+        TextureRegion texturaCompleta = new TextureRegion(textura);
+
+        // La divide en 4 frames de 32x64 (ver marioSprite.png)
+        TextureRegion[][] texturaEnemigo = texturaCompleta.split(62,141);
+
+        // Crea la animación con tiempo de 0.25 segundos entre frames.
+        animacion = new Animation(0.25f, texturaEnemigo[0][3],
+                texturaEnemigo[0][2], texturaEnemigo[0][1]);
+
+        // Animación infinita
+        animacion.setPlayMode(Animation.PlayMode.LOOP);
+
+        // Inicia el timer que contará tiempo para saber qué frame se dibuja
+        timerAnimacion = 0;
+
+        // Crea el sprite con el personaje quieto (idle)
+        sprite = new Sprite(texturaEnemigo[0][0]);    // QUIETO
         sprite.setPosition(x, y);
     }
 
