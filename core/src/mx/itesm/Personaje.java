@@ -197,6 +197,7 @@ public class Personaje {
 
     private void moverVertical(TiledMap mapa) {
         TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(6);
+        float nuevaX = sprite.getY();
         if (estadoMovimiento==EstadoMovimiento.MOV_ARRIBA) {
             int xIzq = (int) ((sprite.getX()) / 32);
             int y = (int) (sprite.getY() / 32);
@@ -211,9 +212,9 @@ public class Personaje {
             }
             if ( celdaIzquierda==null) {
                 // Prueba que no salga del mundo por la izquierda
-                nuevaX -= VELOCIDAD_X;
+                nuevaX += VELOCIDAD_X;
                 if (nuevaX >= 0) {
-                    sprite.setX(nuevaX);
+                    sprite.setY(nuevaX);
                 }
             }
         }

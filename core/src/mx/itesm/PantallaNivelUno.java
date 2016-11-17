@@ -225,7 +225,7 @@ public class PantallaNivelUno implements Screen {
         texturaItemPlayera= manager.get("Playera.png");
 
         //Audio
-        musicaFondo= manager.get("audio/SegundoNivel.mp3");
+        musicaFondo= manager.get("audio/cancionJuego.mp3");
         Texture texturaBtnFlechaArriba = manager.get("BotonFlecha.png");
 
         btnFlechaArriba = new Boton(texturaBtnFlechaArriba);
