@@ -62,6 +62,7 @@ public class PantallaCargando implements Screen {
         assetManager.load("DUDE_camina.png", Texture.class);
         assetManager.load("Papa_camina.png", Texture.class);
         assetManager.load("Playera.png", Texture.class);
+        assetManager.load("Mama_camina.png", Texture.class);
         Gdx.app.log("Cargar recursos", "Cargando mapas");
 
         // Carga música
