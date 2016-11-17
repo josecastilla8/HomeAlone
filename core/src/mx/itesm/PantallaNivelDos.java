@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -99,6 +100,15 @@ public class PantallaNivelDos implements Screen {
     private int contadorvidas = 100;
     private Texture texturaBtnAtras;
     private Stage escena2;
+    private Boton btnFlechaArriba;
+    private Boton btnFlechaDerecha;
+    private Boton btnFlechaIzquierda;
+    private Boton btnFlechaAbajo;
+    private Stage escena3;
+    AssetManager manager;
+    private Texture texturaPausa;
+    private Fondo fondoPausa;
+    private Boton btnPausa;
 
     //Item Redbull
     private Texture texturaItemRedbull;
@@ -111,12 +121,16 @@ public class PantallaNivelDos implements Screen {
 
     @Override
     public void show() {
+        manager = juego.getAssetManager();
         random = new Random();
         texturaFinalGano = new Texture("Pantalla Winner.png");
         fondoFinalGano = new Fondo(texturaFinalGano);
 
         texturaFinalPierde = new Texture("Pantalla Loser.png");
         fondoFinalPierde = new Fondo(texturaFinalPierde);
+
+        texturaPausa= new Texture ("FondoPausa.png");
+        fondoPausa= new Fondo(texturaPausa);
 
         texturaBtnAtras= new Texture("botonback.png");
         TextureRegionDrawable trBtnJugador = new TextureRegionDrawable(new TextureRegion(texturaBtnAtras));
@@ -132,7 +146,33 @@ public class PantallaNivelDos implements Screen {
             }
         });
 
+        ImageButton btnContinue = new ImageButton(new TextureRegionDrawable(new TextureRegion(manager.get("Continue .png",Texture.class))));
+        ImageButton btnExit = new ImageButton(new TextureRegionDrawable(new TextureRegion(manager.get("Exit.png",Texture.class))));
+
+        btnContinue.setPosition(200,100);
+        btnExit.setPosition(350,90);
+
         escena2.addActor(btnJugar);
+        escena3 = new Stage();
+
+        btnContinue.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x,float y){
+                //Gdx.app.log("clicked","TAP sobre el botón de jugar");
+                estadoJuego = 0;
+            }
+        });
+
+        btnExit.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x,float y){
+                //Gdx.app.log("clicked","TAP sobre el botón de jugar");
+                juego.setScreen(new MenuPrincipal(juego));
+            }
+        });
+
+        escena3.addActor(btnContinue);
+        escena3.addActor(btnExit);
 
         inicializarCamara();
         crearEscena();
@@ -174,6 +214,10 @@ public class PantallaNivelDos implements Screen {
                         jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
                     } else if (p.getKnobPercentX() < 0) { // Izquierda
                         jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
+                    }else if(p.getKnobPercentY()>0) {
+                        jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ARRIBA);
+                    }else if(p.getKnobPercentY() < 0){
+                        jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ABAJO);
                     } else {    // Nada
                         jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
                     }
@@ -181,7 +225,7 @@ public class PantallaNivelDos implements Screen {
             }
         });
 
-        escena.addActor(pad);
+        //escena.addActor(pad);
         pad.setColor(1, 1, 1, 0.4f);
 
         Gdx.input.setInputProcessor(escena);
@@ -196,7 +240,7 @@ public class PantallaNivelDos implements Screen {
 
     private void cargarMapa() {
 
-        AssetManager manager= juego.getAssetManager();
+        //AssetManager manager= juego.getAssetManager();
 
         //Si ya cargo los assets...
         mapa= manager.get("mapa4.tmx");
@@ -208,6 +252,26 @@ public class PantallaNivelDos implements Screen {
 
         //Audio
         musicaFondo= manager.get("audio/cancionJuego.mp3");
+
+        Texture texturaBtnFlechaArriba= manager.get("BotonFlecha.png");
+
+        btnFlechaArriba = new Boton(texturaBtnFlechaArriba);
+        btnFlechaDerecha = new Boton(texturaBtnFlechaArriba);
+        btnFlechaIzquierda = new Boton(texturaBtnFlechaArriba);
+        btnFlechaAbajo = new Boton(texturaBtnFlechaArriba);
+
+        Texture texturaBtnPausa = manager.get("Pause.png");
+        btnPausa = new Boton(texturaBtnPausa);
+
+        btnPausa.setPosicion(1100,725);
+
+
+        btnFlechaArriba.setPosicion(70,200);
+        btnFlechaAbajo.setPosicion(70,50);
+        btnFlechaDerecha.setPosicion(10,125);
+        btnFlechaIzquierda.setPosicion(130,125);
+
+
 
         musicaFondo.setLooping(true);
         musicaFondo.play();
@@ -245,6 +309,21 @@ public class PantallaNivelDos implements Screen {
         camaraHUD.position.set(ANCHO_CAMARA/2, PantallaNivelUno.ALTO_CAMARA /2, 0);
         camaraHUD.update();
         vistaHUD = new StretchViewport(ANCHO_CAMARA, PantallaNivelUno.ALTO_CAMARA,camaraHUD);
+    }
+
+    public boolean tocando(Boton boton){
+        Vector3 coordenadas = new Vector3();
+        coordenadas.set(Gdx.input.getX(),Gdx.input.getY(),0);
+        camara.unproject(coordenadas);
+        //if(boton.equals(btnFlechaArriba))
+        //System.out.println(coordenadas.toString() + " " + boton.getSprite().getX() + " : " + boton.getSprite().getY());
+        if(Gdx.input.isTouched()){
+            if(coordenadas.x >= boton.getSprite().getX() && coordenadas.x <= boton.getSprite().getX()+boton.getSprite().getWidth()
+                    && coordenadas.y>=boton.getSprite().getY() && coordenadas.y <= boton.getSprite().getY()+boton.getSprite().getHeight()){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -334,6 +413,10 @@ public class PantallaNivelDos implements Screen {
                 rendererMapa.render();
 
                 batch.begin();
+                btnFlechaIzquierda.render(batch);
+                btnFlechaArriba.render(batch);
+                btnFlechaAbajo.render(batch);
+                btnFlechaDerecha.render(batch);
                 texto.mostrarMensaje(batch, "Score: " + contador, 100, 750);
                 vida.mostrarMensaje(batch, "Vida: " + contadorvidas, 750,750);
                 jugador.render(batch);
@@ -345,6 +428,30 @@ public class PantallaNivelDos implements Screen {
                 if(enemigoChocoContigo(enemigoMama)){
                     contadorvidas--;
                 }
+
+
+                //FLECHAS
+                if(tocando(btnFlechaAbajo)){
+                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ABAJO);
+                    System.out.println("MOVABA");
+                }
+                if(tocando(btnFlechaArriba)){
+                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ARRIBA);
+                    System.out.println("MOVARRI");
+                }
+                if(tocando(btnFlechaDerecha)){
+                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
+                    System.out.println("MOVIZQ");
+                }
+                if(tocando(btnFlechaIzquierda)){
+                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
+                    System.out.println("MOVDER");
+                }
+
+
+
+
+
                 //System.out.println(checarColisiones());
                 for (int i = 0; i < itemPlayera.size(); i++) {
                     if(checarColisiones(itemPlayera.get(i)) == false){
@@ -373,6 +480,10 @@ public class PantallaNivelDos implements Screen {
                 if(contador == 5){
                     this.estadoJuego = 1;
                 }
+                btnPausa.render(batch);
+                if (tocando(btnPausa)){
+                    this.estadoJuego=3;
+                }
                 batch.end();
                 escena.draw();
                 break;
@@ -389,6 +500,13 @@ public class PantallaNivelDos implements Screen {
                 fondoFinalPierde.render(batch);
                 batch.end();
                 escena2.draw();
+                break;
+            case 3:
+                Gdx.input.setInputProcessor(escena3);
+                batch.begin();
+                fondoPausa.render(batch);
+                batch.end();
+                escena3.draw();
                 break;
             default:
                 break;
