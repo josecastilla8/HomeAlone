@@ -82,6 +82,11 @@ public class Personaje {
                 break;
             case MOV_ARRIBA:
             case MOV_ABAJO:
+                timerAnimacion += Gdx.graphics.getDeltaTime();
+                TextureRegion region1 = animacion.getKeyFrame(timerAnimacion);
+
+                batch.draw(region1,sprite.getX(),sprite.getY());
+                break;
             case QUIETO:
             case INICIANDO:
                 sprite.draw(batch); // Dibuja el sprite
@@ -125,6 +130,10 @@ public class Personaje {
             case MOV_DERECHA:
             case MOV_IZQUIERDA:
                 moverHorizontal(mapa);
+                break;
+            case MOV_ARRIBA:
+            case MOV_ABAJO:
+                moverVertical(mapa);
                 break;
         }
     }
@@ -183,6 +192,18 @@ public class Personaje {
                     sprite.setX(nuevaX);
                 }
             }
+        }
+    }
+
+    private void moverVertical(TiledMap mapa) {
+
+        switch (this.estadoMovimiento){
+            case MOV_ABAJO:
+                this.setY(this.getY()-5);
+                break;
+            case MOV_ARRIBA:
+                this.setY(this.getY()+5);
+                break;
         }
     }
 

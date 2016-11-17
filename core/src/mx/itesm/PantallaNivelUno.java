@@ -209,7 +209,7 @@ public class PantallaNivelUno implements Screen {
         manager.finishLoading(); //Bloquea hasta que carga el mapa
         */
 
-        AssetManager manager= juego.getAssetManager();
+        AssetManager manager = juego.getAssetManager();
 
         //Si ya cargo los assets...
         mapa= manager.get("mapa4.tmx");
@@ -279,8 +279,7 @@ public class PantallaNivelUno implements Screen {
         switch (this.estadoJuego){
             case 0:
                 Gdx.input.setInputProcessor(escena);
-                jugador.setY(jugador.getY() + pad.getKnobPercentY()*5);
-                jugador.setX(jugador.getX() + pad.getKnobPercentX()*5);
+
 
                 if(random.nextInt(100)<20){
                     if(enemigoPapa.getX()<jugador.getX()){
