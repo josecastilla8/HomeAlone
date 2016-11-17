@@ -101,6 +101,11 @@ public class PantallaNivelUno implements Screen {
     private Boton btnFlechaDerecha;
     private Boton btnFlechaIzquierda;
     private Boton btnFlechaAbajo;
+    private Stage escena3;
+    AssetManager manager;
+    private Texture texturaPausa;
+    private Fondo fondoPausa;
+    private Boton btnPausa;
 
     public PantallaNivelUno(Juego juego) {
         this.juego= juego;
@@ -108,6 +113,7 @@ public class PantallaNivelUno implements Screen {
 
     @Override
     public void show() {
+        manager = juego.getAssetManager();
         random = new Random();
         texturaFinalGano = new Texture("Pantalla Winner.png");
         fondoFinalGano = new Fondo(texturaFinalGano);
@@ -115,7 +121,8 @@ public class PantallaNivelUno implements Screen {
         texturaFinalPierde = new Texture("Pantalla Loser.png");
         fondoFinalPierde = new Fondo(texturaFinalPierde);
 
-
+        texturaPausa = new Texture("fondoPausa.png");
+        fondoPausa = new Fondo(texturaPausa);
 
         texturaBtnAtras= new Texture("botonback.png");
         TextureRegionDrawable trBtnJugador = new TextureRegionDrawable(new TextureRegion(texturaBtnAtras));
@@ -131,7 +138,34 @@ public class PantallaNivelUno implements Screen {
             }
         });
 
+        ImageButton btnContinue = new ImageButton(new TextureRegionDrawable(new TextureRegion(manager.get("Continue .png",Texture.class))));
+        ImageButton btnExit = new ImageButton(new TextureRegionDrawable(new TextureRegion(manager.get("Exit.png",Texture.class))));
+
+        btnContinue.setPosition(200,100);
+        btnExit.setPosition(350,90);
+
         escena2.addActor(btnJugar);
+
+        escena3 = new Stage();
+
+        btnContinue.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x,float y){
+                //Gdx.app.log("clicked","TAP sobre el botón de jugar");
+                estadoJuego = 0;
+            }
+        });
+
+        btnExit.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x,float y){
+                //Gdx.app.log("clicked","TAP sobre el botón de jugar");
+                juego.setScreen(new MenuPrincipal(juego));
+            }
+        });
+
+        escena3.addActor(btnContinue);
+        escena3.addActor(btnExit);
 
         inicializarCamara();
         crearEscena();
@@ -216,7 +250,7 @@ public class PantallaNivelUno implements Screen {
         manager.finishLoading(); //Bloquea hasta que carga el mapa
         */
 
-        AssetManager manager = juego.getAssetManager();
+
 
         //Si ya cargo los assets...
         mapa= manager.get("mapa4.tmx");
@@ -232,6 +266,11 @@ public class PantallaNivelUno implements Screen {
         btnFlechaDerecha = new Boton(texturaBtnFlechaArriba);
         btnFlechaIzquierda = new Boton(texturaBtnFlechaArriba);
         btnFlechaAbajo = new Boton(texturaBtnFlechaArriba);
+
+        Texture texturaBtnPausa = manager.get("Pause.png");
+        btnPausa = new Boton(texturaBtnPausa);
+
+        btnPausa.setPosicion(1100,725);
 
 
         btnFlechaArriba.setPosicion(70,200);
@@ -394,6 +433,10 @@ public class PantallaNivelUno implements Screen {
                 if(contador == 5){
                     this.estadoJuego = 1;
                 }
+                btnPausa.render(batch);
+                if(tocando(btnPausa)){
+                    this.estadoJuego = 3;
+                }
                 batch.end();
                 escena.draw();
                 break;
@@ -410,6 +453,13 @@ public class PantallaNivelUno implements Screen {
                 fondoFinalPierde.render(batch);
                 batch.end();
                 escena2.draw();
+                break;
+            case 3:
+                Gdx.input.setInputProcessor(escena3);
+                batch.begin();
+                fondoPausa.render(batch);
+                batch.end();
+                escena3.draw();
                 break;
             default:
                 break;
