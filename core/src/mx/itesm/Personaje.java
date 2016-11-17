@@ -200,7 +200,7 @@ public class Personaje {
         float nuevaX = sprite.getY();
         if (estadoMovimiento==EstadoMovimiento.MOV_ARRIBA) {
             int xIzq = (int) ((sprite.getX()) / 32);
-            int y = (int) (sprite.getY() / 32);
+            int y = (int) (sprite.getY() / 32)+1;
             // Obtiene el bloque del lado izquierdo. Asigna null si puede pasar.
             TiledMapTileLayer.Cell celdaIzquierda = capa.getCell(xIzq, y);
             Gdx.app.log("Mover izquierda ","Calculando celda " + xIzq + "," + y);
@@ -213,6 +213,27 @@ public class Personaje {
             if ( celdaIzquierda==null) {
                 // Prueba que no salga del mundo por la izquierda
                 nuevaX += VELOCIDAD_X;
+                if (nuevaX >= 0) {
+                    sprite.setY(nuevaX);
+                }
+            }
+        }
+
+        if (estadoMovimiento==EstadoMovimiento.MOV_ABAJO) {
+            int xIzq = (int) ((sprite.getX()) / 32);
+            int y = (int) ((sprite.getY() / 32));
+            // Obtiene el bloque del lado izquierdo. Asigna null si puede pasar.
+            TiledMapTileLayer.Cell celdaIzquierda = capa.getCell(xIzq, y);
+            Gdx.app.log("Mover izquierda ","Calculando celda " + xIzq + "," + y);
+            if (celdaIzquierda != null) {
+                Object tipo = (String) celdaIzquierda.getTile().getProperties().get("tipo");
+                if (!"paredes".equals(tipo)) {
+                    celdaIzquierda = null;  // Puede pasar
+                }
+            }
+            if ( celdaIzquierda==null) {
+                // Prueba que no salga del mundo por la izquierda
+                nuevaX -= VELOCIDAD_X;
                 if (nuevaX >= 0) {
                     sprite.setY(nuevaX);
                 }
