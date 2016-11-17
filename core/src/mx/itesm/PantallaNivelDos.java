@@ -359,17 +359,8 @@ public class PantallaNivelDos implements Screen {
                 jugador.setY(jugador.getY() + pad.getKnobPercentY()*5);
                 jugador.setX(jugador.getX() + pad.getKnobPercentX()*5);
 
-                if(random.nextInt(100)<20){
-                    if(enemigoPapa.getX()<jugador.getX()){
-                        enemigoPapa.setX(enemigoPapa.getX()+3);
-                    }if(enemigoPapa.getX()>jugador.getX()){
-                        enemigoPapa.setX(enemigoPapa.getX()-3);
-                    }if(enemigoPapa.getY()<jugador.getY()){
-                        enemigoPapa.setY(enemigoPapa.getY()+3);
-                    }if(enemigoPapa.getY()>jugador.getY()){
-                        enemigoPapa.setY(enemigoPapa.getY()-3);
-                    }
-                }
+                //movimiento papa
+                movimientoEnemigo(enemigoPapa);
 
                 if(enemigoPapa.getX()<jugador.getX()){
                     enemigoPapa.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_IZQUIERDA);
@@ -377,18 +368,8 @@ public class PantallaNivelDos implements Screen {
                     enemigoPapa.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_DERECHA);
                 }
 
-
-                if(random.nextInt(100)<20){
-                    if(enemigoMama.getX()<jugador.getX()){
-                        enemigoMama.setX(enemigoMama.getX()+3);
-                    }if(enemigoMama.getX()>jugador.getX()){
-                        enemigoMama.setX(enemigoMama.getX()-3);
-                    }if(enemigoMama.getY()<jugador.getY()){
-                        enemigoMama.setY(enemigoMama.getY()+3);
-                    }if(enemigoMama.getY()>jugador.getY()){
-                        enemigoMama.setY(enemigoMama.getY()-3);
-                    }
-                }
+                //movimientoMama
+                movimientoEnemigo(enemigoMama);
 
                 if(enemigoMama.getX()<jugador.getX()){
                     enemigoMama.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_IZQUIERDA);
@@ -533,6 +514,22 @@ public class PantallaNivelDos implements Screen {
                 && item.getX() -50 <= jugador.getX())
                 && (item.getY() +50 >= jugador.getY()
                 && item.getY() -50 <= jugador.getY())){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean movimientoEnemigo(Enemigo enemigo){
+        if(random.nextInt(100)<20){
+            if(enemigo.getX()<jugador.getX()){
+                enemigo.setX(enemigo.getX()+2);
+            }if(enemigo.getX()>jugador.getX()){
+                enemigo.setX(enemigo.getX()-2);
+            }if(enemigo.getY()<jugador.getY()){
+                enemigo.setY(enemigo.getY()+2);
+            }if(enemigo.getY()>jugador.getY()){
+                enemigo.setY(enemigo.getY()-2);
+            }
             return true;
         }
         return false;

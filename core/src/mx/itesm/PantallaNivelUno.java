@@ -349,24 +349,16 @@ public class PantallaNivelUno implements Screen {
         float xActual = jugador.getX();
         float yActual = jugador.getY();
 
-        //0 - Jugando, 1 - Gano, 2- Perdio, 3 - Pausa
+        //0 - Jugando, 1 - Siguiente Nivel, 2- Perdio, 3 - Pausa
         switch (this.estadoJuego){
             case 0:
                 Gdx.input.setInputProcessor(escena);
 
+                //Movimiento del Papa
+                movimientoEnemigo(enemigoPapa);
 
-                if(random.nextInt(100)<20){
-                    if(enemigoPapa.getX()<jugador.getX()){
-                        enemigoPapa.setX(enemigoPapa.getX()+3);
-                    }if(enemigoPapa.getX()>jugador.getX()){
-                        enemigoPapa.setX(enemigoPapa.getX()-3);
-                    }if(enemigoPapa.getY()<jugador.getY()){
-                        enemigoPapa.setY(enemigoPapa.getY()+3);
-                    }if(enemigoPapa.getY()>jugador.getY()){
-                        enemigoPapa.setY(enemigoPapa.getY()-3);
-                    }
-                }
 
+                //Posicion papa
                 if(enemigoPapa.getX()<jugador.getX()){
                     enemigoPapa.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_IZQUIERDA);
                 }else{
@@ -486,6 +478,22 @@ public class PantallaNivelUno implements Screen {
                 && item.getX() -50 <= jugador.getX())
                 && (item.getY() +50 >= jugador.getY()
                 && item.getY() -50 <= jugador.getY())){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean movimientoEnemigo(Enemigo enemigo){
+        if(random.nextInt(100)<20){
+            if(enemigo.getX()<jugador.getX()){
+                enemigo.setX(enemigo.getX()+2);
+            }if(enemigo.getX()>jugador.getX()){
+                enemigo.setX(enemigo.getX()-2);
+            }if(enemigo.getY()<jugador.getY()){
+                enemigo.setY(enemigo.getY()+2);
+            }if(enemigo.getY()>jugador.getY()){
+                enemigo.setY(enemigo.getY()-2);
+            }
             return true;
         }
         return false;
