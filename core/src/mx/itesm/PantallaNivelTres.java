@@ -22,15 +22,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-
 import java.util.ArrayList;
 import java.util.Random;
+
 
 /**
  * Created by Daniela on 12/09/2016.
  */
 //Comentario
-public class PantallaNivelDos implements Screen {
+public class PantallaNivelTres implements Screen {
 
     public static final int ANCHO_MAPA = 1280;
     public static final int ANCHO_CAMARA = 1280;
@@ -83,6 +83,10 @@ public class PantallaNivelDos implements Screen {
     private Texture texturaEnemigoMama;
     private Enemigo enemigoMama;
 
+    //Enemigo Bruno
+    private Texture texturaEnemigoBruno;
+    private EnemigoB enemigoBruno;
+
     //Item Playera
     private Texture texturaItemPlayera;
     private Item playeraItem;
@@ -101,7 +105,7 @@ public class PantallaNivelDos implements Screen {
     private Item redbullItem;
     private ArrayList<Item> itemRedbull;
 
-    public PantallaNivelDos(Juego juego) {
+    public PantallaNivelTres(Juego juego) {
         this.juego= juego;
     }
 
@@ -122,7 +126,7 @@ public class PantallaNivelDos implements Screen {
         escena2 = new Stage();
         btnJugar.addListener(new ClickListener(){
             @Override
-            public void clicked(InputEvent event, float x,float y){
+            public void clicked(InputEvent event, float x, float y){
                 //Gdx.app.log("clicked","TAP sobre el botón de jugar");
                 juego.setScreen(new MenuPrincipal(juego));
             }
@@ -201,6 +205,7 @@ public class PantallaNivelDos implements Screen {
         texturaItemPlayera= manager.get("Playera.png");
         texturaEnemigoMama= manager.get("Mama_camina.png");
         texturaItemRedbull= manager.get("RedBull.png");
+        texturaEnemigoBruno= manager.get("Bruno_camina.png");
 
         //Crea el objeto que dibujara el mapa
         rendererMapa = new OrthogonalTiledMapRenderer(mapa, batch);
@@ -212,10 +217,9 @@ public class PantallaNivelDos implements Screen {
         //enemigo
         enemigoPapa= new Enemigo(texturaEnemigoPapa);
         enemigoMama= new Enemigo(texturaEnemigoMama,400,400);
+        enemigoBruno= new EnemigoB(texturaEnemigoBruno);
 
         //Item
-        //manager.load("Maceta.png", Texture.class);
-        //texturaItemPlayera= manager.get("Playera.png");
         playeraItem= new Item(texturaItemPlayera);
 
         //Item Redbull
@@ -252,7 +256,7 @@ public class PantallaNivelDos implements Screen {
 
         }
 
-        if(random.nextInt(1000) <50 && itemRedbull.size()<=2){
+        if(random.nextInt(1000) <50 && itemRedbull.size()<=3){
             itemRedbull.add(new Item(texturaItemRedbull,random.nextInt(1000),random.nextInt(700)));
 
 
@@ -307,6 +311,24 @@ public class PantallaNivelDos implements Screen {
                     enemigoMama.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_DERECHA);
                 }
 
+                if(random.nextInt(100)<20){
+                    if(enemigoBruno.getX()<jugador.getX()){
+                        enemigoBruno.setX(enemigoBruno.getX()+3);
+                    }if(enemigoBruno.getX()>jugador.getX()){
+                        enemigoBruno.setX(enemigoBruno.getX()-3);
+                    }if(enemigoBruno.getY()<jugador.getY()){
+                        enemigoBruno.setY(enemigoBruno.getY()+3);
+                    }if(enemigoBruno.getY()>jugador.getY()){
+                        enemigoBruno.setY(enemigoBruno.getY()-3);
+                    }
+                }
+
+                if(enemigoBruno.getX()<jugador.getX()){
+                    enemigoBruno.setEstadoMovimiento(EnemigoB.EstadoMovimiento.MOV_IZQUIERDA);
+                }else{
+                    enemigoBruno.setEstadoMovimiento(EnemigoB.EstadoMovimiento.MOV_DERECHA);
+                }
+
 
 
 
@@ -329,10 +351,14 @@ public class PantallaNivelDos implements Screen {
                 jugador.render(batch);
                 enemigoPapa.render(batch);
                 enemigoMama.render(batch);
+                enemigoBruno.render(batch);
                 if(enemigoChocoContigo(enemigoPapa)){
                     contadorvidas--;
                 }
                 if(enemigoChocoContigo(enemigoMama)){
+                    contadorvidas--;
+                }
+                if(enemigobChocoContigo(enemigoBruno)){
                     contadorvidas--;
                 }
                 //System.out.println(checarColisiones());
@@ -369,7 +395,7 @@ public class PantallaNivelDos implements Screen {
             case 1:
                 Gdx.input.setInputProcessor(escena2);
                 batch.begin();
-                juego.setScreen(new CargandoNivel3(juego));
+                fondoFinalGano.render(batch);
                 batch.end();
                 escena2.draw();
                 break;
@@ -391,6 +417,16 @@ public class PantallaNivelDos implements Screen {
     }
 
     private boolean enemigoChocoContigo(Enemigo enemigo) {
+        if((enemigo.getX() + 50 >= jugador.getX()
+                && enemigo.getX() -50 <= jugador.getX())
+                && (enemigo.getY() +50 >= jugador.getY()
+                && enemigo.getY() -50 <= jugador.getY())){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean enemigobChocoContigo(EnemigoB enemigo) {
         if((enemigo.getX() + 50 >= jugador.getX()
                 && enemigo.getX() -50 <= jugador.getX())
                 && (enemigo.getY() +50 >= jugador.getY()
@@ -435,19 +471,19 @@ public class PantallaNivelDos implements Screen {
     @Override
     public void dispose() {
         texturaJugador.dispose();
+        mapa.dispose();
         texturaItemPlayera.dispose();
         texturaEnemigoPapa.dispose();
         texturaEnemigoMama.dispose();
-        mapa.dispose();
+
 
         //Parte actualizada
         juego.getAssetManager().unload("DUDE_camina.png");
         juego.getAssetManager().unload("Papa_camina.png");
         juego.getAssetManager().unload("Playera.png");
-
         juego.getAssetManager().unload("Mama_camina.png");
+
 
     }
 
 }
-

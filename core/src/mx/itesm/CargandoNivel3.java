@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by daniela on 12/11/16.
  */
-public class LoadingNivel2 implements Screen {
+public class CargandoNivel3 implements Screen {
 
     private Juego juego;
 
@@ -30,7 +30,7 @@ public class LoadingNivel2 implements Screen {
 
     private AssetManager assetManager;
 
-    public LoadingNivel2(Juego juego){
+    public CargandoNivel3(Juego juego){
         this.juego= juego;
         this.assetManager= juego.getAssetManager();
     }
@@ -64,6 +64,7 @@ public class LoadingNivel2 implements Screen {
         assetManager.load("Playera.png", Texture.class);
         assetManager.load("Mama_camina.png",Texture.class);
         assetManager.load("RedBull.png", Texture.class);
+        assetManager.load("Bruno_camina.png", Texture.class);
         Gdx.app.log("Cargar recursos", "Cargando mapas");
 
         // Carga música
@@ -93,7 +94,7 @@ public class LoadingNivel2 implements Screen {
     // Revisa cómo va la carga de assets
     private void actualizarCarga() {
         if ( assetManager.update() ) {  // regresa true si ya terminó la carga
-            juego.setScreen(new PantallaNivelDos(juego));
+            juego.setScreen(new PantallaNivelTres(juego));
         } else {
             // Aún no termina, preguntar cómo va
             float avance = assetManager.getProgress();
@@ -126,3 +127,4 @@ public class LoadingNivel2 implements Screen {
         assetManager.unload("Loading.png");
     }
 }
+
