@@ -23,3 +23,4 @@ public class Texto {
         font.draw(batch,glyp,x-anchoTexto/2,y);
     }
 }
+// texto

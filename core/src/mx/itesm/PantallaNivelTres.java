@@ -212,7 +212,7 @@ public class PantallaNivelTres implements Screen {
         texturaEnemigoBruno= manager.get("Bruno_camina.png");
 
         //Audio
-        musicaFondo= manager.get("audio/SegundoNivel.mp3");
+        musicaFondo= manager.get("audio/cancionJuego.mp3");
 
         musicaFondo.setLooping(true);
         musicaFondo.play();
