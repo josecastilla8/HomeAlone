@@ -24,7 +24,7 @@ public class Juego extends Game
                 new TmxMapLoader(new InternalFileHandleResolver()));
 
         // Pantalla inicial
-        setScreen(new MenuPrincipal(this));
+        setScreen(new PantallaSplash(this));
     }
 
     // Accesor del AssetManager, para que otras clases lo utilicen :)
