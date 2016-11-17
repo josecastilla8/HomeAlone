@@ -207,7 +207,7 @@ public class PantallaNivelDos implements Screen {
         texturaItemRedbull= manager.get("RedBull.png");
 
         //Audio
-        musicaFondo= manager.get("audio/SegundoNivel.mp3");
+        musicaFondo= manager.get("audio/cancionJuego.mp3");
 
         musicaFondo.setLooping(true);
         musicaFondo.play();
