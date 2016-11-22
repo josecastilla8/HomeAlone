@@ -281,6 +281,8 @@ public class PantallaNivelUno implements Screen {
         btnFlechaIzquierda.setPosicion(130,125);
 
 
+
+
         musicaFondo.setLooping(true);
         musicaFondo.play();
 
@@ -294,7 +296,8 @@ public class PantallaNivelUno implements Screen {
         //enemigo
         //texturaEnemigoPapa=manager.get("Papa_sprite.png");
         enemigoPapa= new Enemigo(texturaEnemigoPapa);
-
+        enemigoPapa.setX(100);
+        enemigoPapa.setY(100);
         //Item
         //manager.load("Maceta.png", Texture.class);
         //texturaItemPlayera= manager.get("Playera.png");
@@ -334,6 +337,7 @@ public class PantallaNivelUno implements Screen {
     @Override
     public void render(float delta) {
         jugador.actualizar(mapa);
+        enemigoPapa.actualizar(mapa);
 
         Gdx.gl.glClearColor(1,1,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -361,11 +365,7 @@ public class PantallaNivelUno implements Screen {
 
 
                 //Posicion papa
-                if(enemigoPapa.getX()<jugador.getX()){
-                    enemigoPapa.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_IZQUIERDA);
-                }else{
-                    enemigoPapa.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_DERECHA);
-                }
+
 
 
 
@@ -486,15 +486,16 @@ public class PantallaNivelUno implements Screen {
     }
 
     private boolean movimientoEnemigo(Enemigo enemigo){
-        if(random.nextInt(100)<20){
+        if(random.nextInt(100)<10){
             if(enemigo.getX()<jugador.getX()){
-                enemigo.setX(enemigo.getX()+2);
+                enemigo.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_DERECHA);
             }if(enemigo.getX()>jugador.getX()){
-                enemigo.setX(enemigo.getX()-2);
+                enemigo.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_IZQUIERDA);
             }if(enemigo.getY()<jugador.getY()){
-                enemigo.setY(enemigo.getY()+2);
+                enemigo.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_ARRIBA);
             }if(enemigo.getY()>jugador.getY()){
-                enemigo.setY(enemigo.getY()-2);
+                enemigo.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_ABAJO);
+                enemigo.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_ABAJO);
             }
             return true;
         }

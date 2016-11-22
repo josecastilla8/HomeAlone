@@ -226,7 +226,7 @@ public class PantallaNivelTres implements Screen {
 
         //enemigo
         enemigoPapa= new Enemigo(texturaEnemigoPapa);
-        enemigoMama= new Enemigo(texturaEnemigoMama,400,400);
+        enemigoMama= new Enemigo(texturaEnemigoMama);
         enemigoBruno= new EnemigoB(texturaEnemigoBruno);
 
         //Item

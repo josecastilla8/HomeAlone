@@ -285,7 +285,7 @@ public class PantallaNivelDos implements Screen {
 
         //enemigo
         enemigoPapa= new Enemigo(texturaEnemigoPapa);
-        enemigoMama= new Enemigo(texturaEnemigoMama,400,400);
+        enemigoMama= new Enemigo(texturaEnemigoMama);
 
         //Item
         //manager.load("Maceta.png", Texture.class);
