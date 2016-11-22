@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.sun.org.apache.xpath.internal.SourceTree;
 
 
 /**
@@ -63,11 +64,13 @@ public class Personaje {
 
     // Dibuja el personaje
     public void render(SpriteBatch batch) {
+        Gdx.app.log("QUE ROLLO","Con el pollo");
         // Dibuja el personaje dependiendo del estadoMovimiento
         switch (estadoMovimiento) {
             case MOV_DERECHA:
             case MOV_IZQUIERDA:
                 timerAnimacion += Gdx.graphics.getDeltaTime();
+
                 TextureRegion region = animacion.getKeyFrame(timerAnimacion);
                 if (estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
                     if (!region.isFlipX()) {
@@ -139,7 +142,7 @@ public class Personaje {
     }
 
     private void moverHorizontal(TiledMap mapa) {
-        Gdx.app.log("Mover horizontal ","Entró " );
+
         // Obtiene la primer capa del mapa (en este caso es la única)
         TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(6);
         // Ejecutar movimiento horizontal
@@ -151,11 +154,11 @@ public class Personaje {
             int x = (int) ((sprite.getX() + 32) / 32);   // Convierte coordenadas del mundo en coordenadas del mapa
             int y = (int) (sprite.getY() / 32);
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(x, y);
-            Gdx.app.log("Mover horizontal ","Calculando celda " + x + "," + y);
+            //Gdx.app.log("Mover horizontal ","Calculando celda " + x + "," + y);
             if (celdaDerecha != null) {
 
                 Object tipo = celdaDerecha.getTile().getProperties().get("tipo");
-                Gdx.app.log("Mover horizontal ","Hay celda derecha " + tipo);
+                //Gdx.app.log("Mover horizontal ","Hay celda derecha " + tipo);
                 if (!"paredes".equals(tipo)) {
                     celdaDerecha = null;// Puede pasar
                 }
@@ -169,7 +172,7 @@ public class Personaje {
                     //probarCaida(mapa);
                 }
             }else{
-                Gdx.app.log("Mover horizonta","No se puede mover");
+                //Gdx.app.log("Mover horizonta","No se puede mover");
             }
         }
         // ¿Quiere ir a la izquierda?
@@ -178,7 +181,7 @@ public class Personaje {
             int y = (int) (sprite.getY() / 32);
             // Obtiene el bloque del lado izquierdo. Asigna null si puede pasar.
             TiledMapTileLayer.Cell celdaIzquierda = capa.getCell(xIzq, y);
-            Gdx.app.log("Mover izquierda ","Calculando celda " + xIzq + "," + y);
+           // Gdx.app.log("Mover izquierda ","Calculando celda " + xIzq + "," + y);
             if (celdaIzquierda != null) {
                 Object tipo = (String) celdaIzquierda.getTile().getProperties().get("tipo");
                 if (!"paredes".equals(tipo)) {
@@ -203,7 +206,7 @@ public class Personaje {
             int y = (int) (sprite.getY() / 32)+1;
             // Obtiene el bloque del lado izquierdo. Asigna null si puede pasar.
             TiledMapTileLayer.Cell celdaIzquierda = capa.getCell(xIzq, y);
-            Gdx.app.log("Mover izquierda ","Calculando celda " + xIzq + "," + y);
+           // Gdx.app.log("Mover izquierda ","Calculando celda " + xIzq + "," + y);
             if (celdaIzquierda != null) {
                 Object tipo = (String) celdaIzquierda.getTile().getProperties().get("tipo");
                 if (!"paredes".equals(tipo)) {
@@ -224,7 +227,7 @@ public class Personaje {
             int y = (int) ((sprite.getY() / 32));
             // Obtiene el bloque del lado izquierdo. Asigna null si puede pasar.
             TiledMapTileLayer.Cell celdaIzquierda = capa.getCell(xIzq, y);
-            Gdx.app.log("Mover izquierda ","Calculando celda " + xIzq + "," + y);
+            //Gdx.app.log("Mover izquierda ","Calculando celda " + xIzq + "," + y);
             if (celdaIzquierda != null) {
                 Object tipo = (String) celdaIzquierda.getTile().getProperties().get("tipo");
                 if (!"paredes".equals(tipo)) {

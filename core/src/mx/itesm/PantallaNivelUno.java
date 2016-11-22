@@ -178,60 +178,18 @@ public class PantallaNivelUno implements Screen {
 
         //crearPersonaje();
         //escena = new Stage();
-        crearPad();
+
         //Gdx.input.setInputProcessor(escena);
         //Quien procesa los eventos
         Gdx.gl.glClearColor(1,0,0,1);
 
     }
 
-    private void crearPad() {
-
-        // Para cargar las texturas y convertirlas en Drawable
-        Skin skin = new Skin();
-        skin.add("touchBackground", new Texture("touchBackground.png"));
-        skin.add("touchKnob", new Texture("touchKnob.png"));
-
-
-        // Carcaterísticas del pad
-        Touchpad.TouchpadStyle tpEstilo = new Touchpad.TouchpadStyle();
-        tpEstilo.background = skin.getDrawable("touchBackground");
-        tpEstilo.knob = skin.getDrawable("touchKnob");
-
-        // Crea el pad, revisa la clase Touchpad para entender los parámetros
-        pad = new Touchpad(20, tpEstilo);
-        pad.setBounds(0, 0, 200, 200); // Posición y tamaño
-        pad.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                if (jugador.getEstadoMovimiento() != Personaje.EstadoMovimiento.INICIANDO) {
-                    Touchpad p = (Touchpad) actor;
-                    if (p.getKnobPercentX() > 0) {    //Derecha
-                        jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
-                    } else if (p.getKnobPercentX() < 0) { // Izquierda
-                        jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
-                    }else if(p.getKnobPercentY()>0) {
-                        jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ARRIBA);
-                    }else if(p.getKnobPercentY() < 0){
-                        jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ABAJO);
-                    } else {    // Nada
-                        jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
-                    }
-                }
-            }
-        });
-
-        //escena.addActor(pad);
-        pad.setColor(1, 1, 1, 0.4f);
-
-        Gdx.input.setInputProcessor(escena);
-    }
-
     private void crearEscena() {
         batch= new SpriteBatch();
         escena= new Stage();
         escena.setViewport(vistaHUD);
-        crearPad();
+
     }
 
     private void cargarMapa() {
@@ -252,8 +210,6 @@ public class PantallaNivelUno implements Screen {
         manager.finishLoading(); //Bloquea hasta que carga el mapa
         */
 
-
-
         //Si ya cargo los assets...
         mapa= manager.get("mapa4.tmx");
         texturaJugador= manager.get("DUDE_camina.png");
@@ -263,7 +219,6 @@ public class PantallaNivelUno implements Screen {
         //Audio
         musicaFondo= manager.get("audio/cancionJuego.mp3");
         sonidoRopa= manager.get("audio/atrapaRopa.mp3");
-
 
         Texture texturaBtnFlechaArriba = manager.get("BotonFlecha.png");
 
@@ -277,14 +232,10 @@ public class PantallaNivelUno implements Screen {
 
         btnPausa.setPosicion(1100,725);
 
-
         btnFlechaArriba.setPosicion(70,200);
         btnFlechaAbajo.setPosicion(70,50);
         btnFlechaDerecha.setPosicion(10,125);
         btnFlechaIzquierda.setPosicion(130,125);
-
-
-
 
         musicaFondo.setLooping(true);
         musicaFondo.play();
@@ -305,9 +256,7 @@ public class PantallaNivelUno implements Screen {
         //manager.load("Maceta.png", Texture.class);
         //texturaItemPlayera= manager.get("Playera.png");
         playeraItem= new Item(texturaItemPlayera);
-
     }
-
 
     private void inicializarCamara() {
         camara = new OrthographicCamera(ANCHO_CAMARA, ALTO_CAMARA);
@@ -369,10 +318,6 @@ public class PantallaNivelUno implements Screen {
 
                 //Posicion papa
 
-
-
-
-
                 if(xActual == jugador.getX() && yActual == jugador.getY()){
                     jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
                 }else if(xActual > jugador.getX() && yActual == jugador.getY()){
@@ -400,19 +345,19 @@ public class PantallaNivelUno implements Screen {
                 }
                 if(tocando(btnFlechaAbajo)){
                     jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ABAJO);
-                    System.out.println("MOVABA");
+
                 }
                 if(tocando(btnFlechaArriba)){
                     jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ARRIBA);
-                    System.out.println("MOVARRI");
+
                 }
                 if(tocando(btnFlechaDerecha)){
                     jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
-                    System.out.println("MOVIZQ");
+
                 }
                 if(tocando(btnFlechaIzquierda)){
                     jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
-                    System.out.println("MOVDER");
+
                 }
                 //System.out.println(checarColisiones());
                 for (int i = 0; i < itemPlayera.size(); i++) {
@@ -498,7 +443,6 @@ public class PantallaNivelUno implements Screen {
             }if(enemigo.getY()<jugador.getY()){
                 enemigo.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_ARRIBA);
             }if(enemigo.getY()>jugador.getY()){
-                enemigo.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_ABAJO);
                 enemigo.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_ABAJO);
             }
             return true;
