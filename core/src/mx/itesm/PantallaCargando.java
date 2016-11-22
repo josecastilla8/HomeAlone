@@ -78,6 +78,8 @@ public class PantallaCargando implements Screen {
 
         //Cargar musica
         assetManager.load("audio/cancionJuego.mp3", Music.class);
+        assetManager.load("audio/atrapaRopa.mp3", Sound.class);
+        assetManager.load("audio/RedBull.mp3", Sound.class);
         Gdx.app.log("Cargar recursos", "Cargando mapas");
 
         // Carga música

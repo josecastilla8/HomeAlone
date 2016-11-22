@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -65,6 +66,7 @@ public class PantallaNivelUno implements Screen {
 
     //Musica
     private Music musicaFondo;
+    private Sound sonidoRopa;
 
     //SpriteBatch sirve para administrar los trazos
     private SpriteBatch batch;
@@ -260,6 +262,7 @@ public class PantallaNivelUno implements Screen {
 
         //Audio
         musicaFondo= manager.get("audio/cancionJuego.mp3");
+        sonidoRopa= manager.get("audio/atrapaRopa.mp3");
 
 
         Texture texturaBtnFlechaArriba = manager.get("BotonFlecha.png");
@@ -418,6 +421,7 @@ public class PantallaNivelUno implements Screen {
                     }else if(checarColisiones(itemPlayera.get(i)) == true){
                         itemPlayera.get(i).setX(10000);
                         contador++;
+                        sonidoRopa.play();
                     }
 
                 }
