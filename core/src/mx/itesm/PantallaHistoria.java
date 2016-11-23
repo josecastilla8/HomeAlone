@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * Created by safin on 22/11/2016.
@@ -17,6 +19,15 @@ public class PantallaHistoria implements Screen {
 
     private Juego juego;
     private Stage escena;
+
+    //Declaramos la camara
+    private OrthographicCamera camara;
+    private Viewport vista;
+    //*********************
+
+    //SpriteBatch sirve para administrar los trazos
+    private SpriteBatch batch;
+    //**********************
 
     //Fondo
     private Texture fondoHistoria1;
@@ -34,8 +45,8 @@ public class PantallaHistoria implements Screen {
     private Fondo fondo6;
     private Fondo fondo7;
 
-    private SpriteBatch batch;
-    private OrthographicCamera camara;
+    //private SpriteBatch batch;
+    //private OrthographicCamera camara;
 
     private int cont= 0;
 
@@ -47,10 +58,13 @@ public class PantallaHistoria implements Screen {
     public void show() {
         escena = new Stage();
 
-        //Fondo
-        camara = new OrthographicCamera(1280,800);
-        camara.position.set(1280 / 2, 800 / 2, 0);
+        //Camara
+        camara = new OrthographicCamera(ANCHO,ALTO);
+        camara.position.set(ANCHO / 2, ALTO / 2, 0);
         camara.update();
+        vista= new StretchViewport(ANCHO, ALTO, camara);
+
+        //Fondo
         fondoHistoria1 = new Texture(Gdx.files.internal("Frame1.png"));
         fondoHistoria2 = new Texture(Gdx.files.internal("Frame2.png"));
         fondoHistoria3 = new Texture(Gdx.files.internal("Frame3.png"));
@@ -67,6 +81,7 @@ public class PantallaHistoria implements Screen {
         fondo7 = new Fondo(fondoHistoria7);
         batch = new SpriteBatch();
 
+        escena.setViewport(vista);
         Gdx.input.setInputProcessor(escena);
 
     }
