@@ -82,7 +82,7 @@ public class PantallaOpciones implements Screen {
         //TextureRegionDrawable trdBtnMute = new TextureRegionDrawable(new TextureRegion(texturaMute));
         //ImageButton btnMute = new ImageButton(trdBtnMute);
         btnMute.setPosicion(682, 505);
-        btnPlay.setPosicion(542, 505);
+        btnPlay.setPosicion(539, 505);
 
 
         escena = new Stage();
