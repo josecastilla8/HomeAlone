@@ -6,7 +6,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -45,6 +50,9 @@ public class PantallaHistoria implements Screen {
     private Fondo fondo6;
     private Fondo fondo7;
 
+    //Boton
+    private Texture texturaBtnSkip;
+
     //private SpriteBatch batch;
     //private OrthographicCamera camara;
 
@@ -81,6 +89,22 @@ public class PantallaHistoria implements Screen {
         fondo7 = new Fondo(fondoHistoria7);
         batch = new SpriteBatch();
 
+        //Boton Skip
+        texturaBtnSkip= new Texture("right.png");
+        TextureRegionDrawable trBtnSkip = new TextureRegionDrawable(new TextureRegion(texturaBtnSkip));
+        ImageButton btnSkip = new ImageButton(trBtnSkip);
+        btnSkip.setPosition(ANCHO /1.1f - btnSkip.getWidth() / 2, 0.1f * ALTO);
+
+        escena.addActor(btnSkip);
+
+        btnSkip.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                Gdx.app.log("clicked","TAP sobre el botón de skip");
+                juego.setScreen(new PantallaCargando(juego, 1));
+            }
+        });
+
         escena.setViewport(vista);
         Gdx.input.setInputProcessor(escena);
 
@@ -89,10 +113,11 @@ public class PantallaHistoria implements Screen {
     @Override
     public void render(float delta) {
         cont++;
+        batch.setProjectionMatrix(camara.combined);
         escena.draw();
 
         //Fondo
-        batch.setProjectionMatrix(camara.combined);
+
         batch.begin();
         if(cont<150) {
             fondo1.render(batch);
@@ -116,19 +141,20 @@ public class PantallaHistoria implements Screen {
             fondo7.render(batch);
         }
 
-        batch.end();
-        escena.draw();
+
         if(cont >750 ){
             juego.setScreen(new PantallaCargando(juego, 1));
             this.dispose();
         }
+        batch.end();
+        escena.draw();
 
     }
 
 
     @Override
     public void resize(int width, int height) {
-        //vista.update(width, height);
+        vista.update(width, height);
 
     }
 
