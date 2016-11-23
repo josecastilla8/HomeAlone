@@ -73,35 +73,43 @@ public class PantallaHistoria implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1,0,0,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //Gdx.gl.glClearColor(1,0,0,1);
+        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         cont++;
         escena.draw();
 
         //Fondo
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
-        fondo1.render(batch);
-        //fondo2.render(batch);
+        if(cont<150) {
+            fondo1.render(batch);
+        }
+        if(cont >150 && cont <250){
+            fondo2.render(batch);
+        }
+        if(cont >250 && cont <350){
+            fondo3.render(batch);
+        }
+        if(cont >350 && cont <450){
+            fondo4.render(batch);
+        }
+        if(cont >450 && cont <550){
+            fondo5.render(batch);
+        }
+        if(cont >550 && cont <650){
+            fondo6.render(batch);
+        }
+        if(cont >650 && cont <750){
+            fondo7.render(batch);
+        }
+
         batch.end();
         escena.draw();
-
-        if(cont >150 && cont <300){
-            //fondo2.render(batch);
+        if(cont >750 ){
             juego.setScreen(new PantallaCargando(juego, 1));
             this.dispose();
-
-
         }
 
-        if(cont >300 && cont <450){
-            //fondo3.render(batch);
-            juego.setScreen(new PantallaCargando(juego, 1));
-            this.dispose();
-            //escena.draw();
-
-        }
-        //batch.end();
     }
 
 

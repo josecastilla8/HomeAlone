@@ -105,6 +105,8 @@ public class PantallaNivelDos implements Screen {
     private int contadorvidas = 100;
     private Texture texturaBtnAtras;
     private Stage escena2;
+
+
     private Boton btnFlechaArriba;
     private Boton btnFlechaDerecha;
     private Boton btnFlechaIzquierda;
