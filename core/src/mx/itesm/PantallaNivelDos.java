@@ -67,6 +67,7 @@ public class PantallaNivelDos implements Screen {
     //Musica
     private Music musicaFondo;
     private Sound sonidoRopa;
+    private Sound sonidoRedBull;
 
     //SpriteBatch sirve para administrar los trazos
     private SpriteBatch batch;
@@ -237,6 +238,7 @@ public class PantallaNivelDos implements Screen {
         //Audio
         musicaFondo= manager.get("audio/cancionJuego.mp3");
         sonidoRopa= manager.get("audio/atrapaRopa.mp3");
+        sonidoRedBull= manager.get("audio/RedBull.mp3");
 
         Texture texturaBtnFlechaArriba = manager.get("up.png");
         Texture texturaBtnFlechaAbajo = manager.get("down.png");
@@ -258,8 +260,8 @@ public class PantallaNivelDos implements Screen {
         btnFlechaDerecha.setPosicion(130,125);
         btnFlechaIzquierda.setPosicion(10,125);
 
-        musicaFondo.setLooping(true);
-        musicaFondo.play();
+        //musicaFondo.setLooping(true);
+        //musicaFondo.play();
 
         //Crea el objeto que dibujara el mapa
         rendererMapa = new OrthogonalTiledMapRenderer(mapa, batch);
@@ -407,6 +409,7 @@ public class PantallaNivelDos implements Screen {
                     }else if(checarColisiones(itemRedbull.get(i)) == true){
                         itemRedbull.get(i).setX(10000);
                         contadorvidas=contadorvidas+30;
+                        sonidoRedBull.play();
                     }
 
                 }
