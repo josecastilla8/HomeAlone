@@ -68,10 +68,25 @@ public class Personaje {
         // Dibuja el personaje dependiendo del estadoMovimiento
         switch (estadoMovimiento) {
             case MOV_DERECHA:
-            case MOV_IZQUIERDA:
+                //Gdx.app.log("QUE ROLLO","Con el pollo");
                 timerAnimacion += Gdx.graphics.getDeltaTime();
 
                 TextureRegion region = animacion.getKeyFrame(timerAnimacion);
+                if (estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
+                    if (!region.isFlipX()) {
+                        region.flip(true,false);
+                    }
+                } else {
+                    if (region.isFlipX()) {
+                        region.flip(true,false);
+                    }
+                }
+                batch.draw(region,sprite.getX(),sprite.getY());
+                break;
+            case MOV_IZQUIERDA:
+                timerAnimacion += Gdx.graphics.getDeltaTime();
+
+                region = animacion.getKeyFrame(timerAnimacion);
                 if (estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
                     if (!region.isFlipX()) {
                         region.flip(true,false);
