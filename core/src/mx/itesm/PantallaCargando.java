@@ -21,6 +21,7 @@ public class PantallaCargando implements Screen {
 
     private Juego juego;
 
+    //
     //Camara y vista
     private OrthographicCamera camara;
     private Viewport vista;
