@@ -88,9 +88,23 @@ public class PantallaNivelUno implements Screen {
     private Texture texturaEnemigoPapa;
     private Enemigo enemigoPapa;
 
+    //Enemigo Mama
+    private Texture texturaEnemigoMama;
+    private Enemigo enemigoMama;
+
+    //RedBull
+    private Texture texturaItemRedbull;
+    private Item redbullItem;
+
     //Item Playera
     private Texture texturaItemPlayera;
     private Item playeraItem;
+
+    //Enemigo Bruno
+    private Texture texturaEnemigoBruno;
+    private EnemigoB enemigoBruno;
+
+
     private ArrayList<Item> itemPlayera;
     private int estadoJuego = 0;
     private Texture texturaFinalGano;
@@ -179,10 +193,6 @@ public class PantallaNivelUno implements Screen {
         vida = new Texto();
         itemPlayera = new ArrayList<Item>();
 
-        //crearPersonaje();
-        //escena = new Stage();
-
-        //Gdx.input.setInputProcessor(escena);
         //Quien procesa los eventos
         Gdx.gl.glClearColor(1,0,0,1);
         Gdx.input.setCatchBackKey(true);
@@ -198,27 +208,15 @@ public class PantallaNivelUno implements Screen {
 
     private void cargarMapa() {
         //Ahora son cargados en PantallaCargando
-        //manager= new AssetManager();
-        /*
-        AssetManager manager= juego.getAssetManager();
-
-        //Cargar mapa
-        manager.setLoader(TiledMap.class,
-                new TmxMapLoader(new InternalFileHandleResolver()));
-        manager.load("mapa4.tmx", TiledMap.class);
-
-        //Cargar personaje
-        manager.load("DUDE_camina.png", Texture.class);
-        manager.load("Playera.png",Texture.class);
-        manager.load("Papa_sprite.png", Texture.class);
-        manager.finishLoading(); //Bloquea hasta que carga el mapa
-        */
 
         //Si ya cargo los assets...
         mapa= manager.get("mapa4.tmx");
         texturaJugador= manager.get("DUDE_camina.png");
         texturaEnemigoPapa= manager.get("Papa_camina.png");
         texturaItemPlayera= manager.get("Playera.png");
+        texturaEnemigoMama= manager.get("Mama_camina.png");
+        texturaItemRedbull= manager.get("RedBull.png");
+        texturaEnemigoBruno= manager.get("Bruno_camina.png");
 
         //Audio
         musicaFondo= manager.get("audio/cancionJuego.mp3");
@@ -255,15 +253,20 @@ public class PantallaNivelUno implements Screen {
         //Dude
         jugador = new Enemigo(texturaJugador);
 
-        //enemigo
+        //enemigos
         //texturaEnemigoPapa=manager.get("Papa_sprite.png");
         enemigoPapa= new Enemigo(texturaEnemigoPapa);
         enemigoPapa.setX(100);
         enemigoPapa.setY(100);
+        enemigoMama= new Enemigo(texturaEnemigoMama);
+        enemigoBruno= new EnemigoB(texturaEnemigoBruno);
         //Item
         //manager.load("Maceta.png", Texture.class);
         //texturaItemPlayera= manager.get("Playera.png");
         playeraItem= new Item(texturaItemPlayera);
+        redbullItem= new Item(texturaItemRedbull);
+
+
     }
 
     private void inicializarCamara() {
@@ -346,6 +349,7 @@ public class PantallaNivelUno implements Screen {
                 vida.mostrarMensaje(batch, "Vida: " + contadorvidas, 750,750);
                 jugador.render(batch);
                 enemigoPapa.render(batch);
+
                 if(papaChocoContigo()){
                     contadorvidas--;
                 }
@@ -492,12 +496,17 @@ public class PantallaNivelUno implements Screen {
         mapa.dispose();
         texturaItemPlayera.dispose();
         texturaEnemigoPapa.dispose();
+        texturaEnemigoMama.dispose();
+        //texturaItemRedbull.dispose();
+        //texturaEnemigoBruno.dispose();
         musicaFondo.dispose();
         //Parte actualizada
         juego.getAssetManager().unload("DUDE_camina.png");
         juego.getAssetManager().unload("Papa_camina.png");
         juego.getAssetManager().unload("Playera.png");
-
+        //juego.getAssetManager().unload("RedBull.png");
+        juego.getAssetManager().unload("Mama_camina.png");
+        //juego.getAssetManager().unload("Bruno_camina.png");
     }
 
 }

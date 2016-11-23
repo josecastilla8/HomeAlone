@@ -98,6 +98,8 @@ public class PantallaNivelDos implements Screen {
     private Texture texturaItemPlayera;
     private Item playeraItem;
     private ArrayList<Item> itemPlayera;
+
+
     private int estadoJuego = 0;
     private Texture texturaFinalGano;
     private Fondo fondoFinalGano;
@@ -284,6 +286,8 @@ public class PantallaNivelDos implements Screen {
         playeraItem= new Item(texturaItemPlayera);
         //Item Redbull
         redbullItem= new Item(texturaItemRedbull);
+        System.out.print(redbullItem);
+        System.out.println(texturaItemRedbull);
     }
 
     private void inicializarCamara() {
