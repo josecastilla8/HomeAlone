@@ -443,7 +443,8 @@ public class PantallaNivelTres implements Screen {
             case 1:
                 Gdx.input.setInputProcessor(escena2);
                 batch.begin();
-                juego.setScreen(new PantallaCargando(juego,0));
+                fondoFinalGano.render(batch);
+                //juego.setScreen(new PantallaCargando(juego,0));
                 batch.end();
                 escena2.draw();
                 break;
