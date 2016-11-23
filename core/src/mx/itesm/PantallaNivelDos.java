@@ -1,6 +1,7 @@
 package mx.itesm;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Created by Daniela on 12/09/2016.
+ * Created by Javier on 22/09/2016.
  */
 //Comentario
 public class PantallaNivelDos implements Screen {
@@ -58,7 +59,7 @@ public class PantallaNivelDos implements Screen {
 
     //Declaramos al jugador
     private Texture texturaJugador;
-    private Personaje jugador;
+    private Enemigo jugador;
 
     // Pad
     private Touchpad pad;
@@ -66,7 +67,6 @@ public class PantallaNivelDos implements Screen {
     //Musica
     private Music musicaFondo;
     private Sound sonidoRopa;
-    private Sound sonidoLata;
 
     //SpriteBatch sirve para administrar los trazos
     private SpriteBatch batch;
@@ -113,17 +113,13 @@ public class PantallaNivelDos implements Screen {
     private Fondo fondoPausa;
     private Boton btnPausa;
 
-    //Item Redbull
-    private Texture texturaItemRedbull;
-    private Item redbullItem;
-    private ArrayList<Item> itemRedbull;
-
     public PantallaNivelDos(Juego juego) {
         this.juego= juego;
     }
 
     @Override
     public void show() {
+
         manager = juego.getAssetManager();
         random = new Random();
         texturaFinalGano = new Texture("Pantalla Winner.png");
@@ -132,8 +128,8 @@ public class PantallaNivelDos implements Screen {
         texturaFinalPierde = new Texture("Pantalla Loser.png");
         fondoFinalPierde = new Fondo(texturaFinalPierde);
 
-        texturaPausa= new Texture ("FondoPausa.png");
-        fondoPausa= new Fondo(texturaPausa);
+        texturaPausa = new Texture("fondoPausa.png");
+        fondoPausa = new Fondo(texturaPausa);
 
         texturaBtnAtras= new Texture("botonback.png");
         TextureRegionDrawable trBtnJugador = new TextureRegionDrawable(new TextureRegion(texturaBtnAtras));
@@ -156,6 +152,7 @@ public class PantallaNivelDos implements Screen {
         btnExit.setPosition(350,90);
 
         escena2.addActor(btnJugar);
+
         escena3 = new Stage();
 
         btnContinue.addListener(new ClickListener(){
@@ -183,100 +180,72 @@ public class PantallaNivelDos implements Screen {
         texto = new Texto();
         vida = new Texto();
         itemPlayera = new ArrayList<Item>();
-        itemRedbull= new ArrayList<Item>();
 
+        //crearPersonaje();
+        //escena = new Stage();
 
-        crearPad();
-
+        //Gdx.input.setInputProcessor(escena);
+        //Quien procesa los eventos
         Gdx.gl.glClearColor(1,0,0,1);
+        Gdx.input.setCatchBackKey(true);
 
-    }
-
-    private void crearPad() {
-
-        // Para cargar las texturas y convertirlas en Drawable
-        Skin skin = new Skin();
-        skin.add("touchBackground", new Texture("touchBackground.png"));
-        skin.add("touchKnob", new Texture("touchKnob.png"));
-
-
-        // Carcaterísticas del pad
-        Touchpad.TouchpadStyle tpEstilo = new Touchpad.TouchpadStyle();
-        tpEstilo.background = skin.getDrawable("touchBackground");
-        tpEstilo.knob = skin.getDrawable("touchKnob");
-
-        // Crea el pad, revisa la clase Touchpad para entender los parámetros
-        pad = new Touchpad(20, tpEstilo);
-        pad.setBounds(0, 0, 200, 200); // Posición y tamaño
-        pad.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                if (jugador.getEstadoMovimiento() != Personaje.EstadoMovimiento.INICIANDO) {
-                    Touchpad p = (Touchpad) actor;
-                    if (p.getKnobPercentX() > 0) {    //Derecha
-                        jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
-                    } else if (p.getKnobPercentX() < 0) { // Izquierda
-                        jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
-                    }else if(p.getKnobPercentY()>0) {
-                        jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ARRIBA);
-                    }else if(p.getKnobPercentY() < 0){
-                        jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ABAJO);
-                    } else {    // Nada
-                        jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
-                    }
-                }
-            }
-        });
-
-        //escena.addActor(pad);
-        pad.setColor(1, 1, 1, 0.4f);
-
-        Gdx.input.setInputProcessor(escena);
     }
 
     private void crearEscena() {
         batch= new SpriteBatch();
         escena= new Stage();
         escena.setViewport(vistaHUD);
-        crearPad();
+
     }
 
     private void cargarMapa() {
+        //Ahora son cargados en PantallaCargando
+        //manager= new AssetManager();
+        /*
+        AssetManager manager= juego.getAssetManager();
 
-        //AssetManager manager= juego.getAssetManager();
+        //Cargar mapa
+        manager.setLoader(TiledMap.class,
+                new TmxMapLoader(new InternalFileHandleResolver()));
+        manager.load("mapa4.tmx", TiledMap.class);
+
+        //Cargar personaje
+        manager.load("DUDE_camina.png", Texture.class);
+        manager.load("Playera.png",Texture.class);
+        manager.load("Papa_sprite.png", Texture.class);
+        manager.finishLoading(); //Bloquea hasta que carga el mapa
+        */
 
         //Si ya cargo los assets...
         mapa= manager.get("mapa4.tmx");
         texturaJugador= manager.get("DUDE_camina.png");
         texturaEnemigoPapa= manager.get("Papa_camina.png");
-        texturaItemPlayera= manager.get("Playera.png");
         texturaEnemigoMama= manager.get("Mama_camina.png");
-        texturaItemRedbull= manager.get("RedBull.png");
+        texturaItemPlayera= manager.get("Playera.png");
 
         //Audio
         musicaFondo= manager.get("audio/cancionJuego.mp3");
         sonidoRopa= manager.get("audio/atrapaRopa.mp3");
-        sonidoLata= manager.get("audio/RedBull.mp3");
 
-        Texture texturaBtnFlechaArriba= manager.get("BotonFlecha.png");
+        Texture texturaBtnFlechaArriba = manager.get("up.png");
+        Texture texturaBtnFlechaAbajo = manager.get("down.png");
+        Texture texturaBtnFlechaDerecha = manager.get("right.png");
+        Texture texturaBtnFlechaIzquierda = manager.get("left.png");
 
         btnFlechaArriba = new Boton(texturaBtnFlechaArriba);
-        btnFlechaDerecha = new Boton(texturaBtnFlechaArriba);
-        btnFlechaIzquierda = new Boton(texturaBtnFlechaArriba);
-        btnFlechaAbajo = new Boton(texturaBtnFlechaArriba);
+        btnFlechaDerecha = new Boton(texturaBtnFlechaDerecha);
+        btnFlechaIzquierda = new Boton(texturaBtnFlechaIzquierda);
+        btnFlechaAbajo = new Boton(texturaBtnFlechaAbajo);
 
         Texture texturaBtnPausa = manager.get("Pause.png");
         btnPausa = new Boton(texturaBtnPausa);
 
         btnPausa.setPosicion(1100,725);
 
-
         btnFlechaArriba.setPosicion(70,200);
         btnFlechaAbajo.setPosicion(70,50);
-        btnFlechaDerecha.setPosicion(10,125);
-        btnFlechaIzquierda.setPosicion(130,125);
-
-
+        btnFlechaDerecha.setPosicion(130,125);
+        btnFlechaIzquierda.setPosicion(10,125);
 
         musicaFondo.setLooping(true);
         musicaFondo.play();
@@ -286,22 +255,21 @@ public class PantallaNivelDos implements Screen {
         rendererMapa.setView(camara);
 
         //Dude
-        jugador = new Personaje(texturaJugador);
+        jugador = new Enemigo(texturaJugador);
 
         //enemigo
+        //texturaEnemigoPapa=manager.get("Papa_sprite.png");
         enemigoPapa= new Enemigo(texturaEnemigoPapa);
+        enemigoPapa.setX(100);
+        enemigoPapa.setY(100);
         enemigoMama= new Enemigo(texturaEnemigoMama);
-
+        enemigoMama.setX(200);
+        enemigoMama.setY(200);
         //Item
         //manager.load("Maceta.png", Texture.class);
         //texturaItemPlayera= manager.get("Playera.png");
         playeraItem= new Item(texturaItemPlayera);
-
-        //Item Redbull
-        redbullItem= new Item(texturaItemRedbull);
-
     }
-
 
     private void inicializarCamara() {
         camara = new OrthographicCamera(ANCHO_CAMARA, ALTO_CAMARA);
@@ -334,6 +302,7 @@ public class PantallaNivelDos implements Screen {
     @Override
     public void render(float delta) {
         jugador.actualizar(mapa);
+        enemigoPapa.actualizar(mapa);
 
         Gdx.gl.glClearColor(1,1,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -346,52 +315,23 @@ public class PantallaNivelDos implements Screen {
 
         }
 
-        if(random.nextInt(1000) <50 && itemRedbull.size()<=2){
-            itemRedbull.add(new Item(texturaItemRedbull,random.nextInt(1000),random.nextInt(700)));
-
-
-        }
-
 
 
         float xActual = jugador.getX();
         float yActual = jugador.getY();
 
-        //0 - Jugando, 1 - Gano, 2- Perdio, 3 - Pausa
+        //0 - Jugando, 1 - Siguiente Nivel, 2- Perdio, 3 - Pausa
         switch (this.estadoJuego){
             case 0:
                 Gdx.input.setInputProcessor(escena);
-                jugador.setY(jugador.getY() + pad.getKnobPercentY()*5);
-                jugador.setX(jugador.getX() + pad.getKnobPercentX()*5);
 
-                //movimiento papa
+                //Movimiento del Papa
                 movimientoEnemigo(enemigoPapa);
 
-                if(enemigoPapa.getX()<jugador.getX()){
-                    enemigoPapa.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_IZQUIERDA);
-                }else{
-                    enemigoPapa.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_DERECHA);
-                }
-
-                //movimientoMama
                 movimientoEnemigo(enemigoMama);
-
-                if(enemigoMama.getX()<jugador.getX()){
-                    enemigoMama.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_IZQUIERDA);
-                }else{
-                    enemigoMama.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_DERECHA);
-                }
+                //Posicion papa
 
 
-
-
-                if(xActual == jugador.getX() && yActual == jugador.getY()){
-                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
-                }else if(xActual > jugador.getX() && yActual == jugador.getY()){
-                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
-                }else if(xActual < jugador.getX() && yActual == jugador.getY()){
-                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
-                }
 
 
 
@@ -414,30 +354,22 @@ public class PantallaNivelDos implements Screen {
                 if(enemigoChocoContigo(enemigoMama)){
                     contadorvidas--;
                 }
-
-
-                //FLECHAS
                 if(tocando(btnFlechaAbajo)){
-                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ABAJO);
-                    System.out.println("MOVABA");
+                    jugador.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_ABAJO);
+
                 }
                 if(tocando(btnFlechaArriba)){
-                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ARRIBA);
-                    System.out.println("MOVARRI");
+                    jugador.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_ARRIBA);
+
                 }
                 if(tocando(btnFlechaDerecha)){
-                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
-                    System.out.println("MOVIZQ");
+                    jugador.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_DERECHA);
+
                 }
                 if(tocando(btnFlechaIzquierda)){
-                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
-                    System.out.println("MOVDER");
+                    jugador.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_IZQUIERDA);
+
                 }
-
-
-
-
-
                 //System.out.println(checarColisiones());
                 for (int i = 0; i < itemPlayera.size(); i++) {
                     if(checarColisiones(itemPlayera.get(i)) == false){
@@ -449,19 +381,6 @@ public class PantallaNivelDos implements Screen {
                     }
 
                 }
-
-                for (int i = 0; i < itemRedbull.size(); i++) {
-                    if(checarColisiones(itemRedbull.get(i)) == false){
-                        itemRedbull.get(i).render(batch);
-                    }else if(checarColisiones(itemRedbull.get(i)) == true){
-                        itemRedbull.get(i).setX(10000);
-                        contadorvidas=contadorvidas+30;
-                        sonidoLata.play();
-                    }
-
-                }
-
-
                 if(contadorvidas==0){
                     this.estadoJuego = 2;
                 }
@@ -469,8 +388,8 @@ public class PantallaNivelDos implements Screen {
                     this.estadoJuego = 1;
                 }
                 btnPausa.render(batch);
-                if (tocando(btnPausa)){
-                    this.estadoJuego=3;
+                if(tocando(btnPausa)){
+                    this.estadoJuego = 3;
                 }
                 batch.end();
                 escena.draw();
@@ -499,6 +418,9 @@ public class PantallaNivelDos implements Screen {
             default:
                 break;
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+
+        }
 
 
         // Dibuja el HUD
@@ -516,6 +438,16 @@ public class PantallaNivelDos implements Screen {
         return false;
     }
 
+    private boolean mamaChocoContigo() {
+        if((enemigoMama.getX() + 50 >= jugador.getX()
+                && enemigoMama.getX() -50 <= jugador.getX())
+                && (enemigoMama.getY() +50 >= jugador.getY()
+                && enemigoMama.getY() -50 <= jugador.getY())){
+            return true;
+        }
+        return false;
+    }
+
     private boolean checarColisiones(Item item) {
         if((item.getX() + 50 >= jugador.getX()
                 && item.getX() -50 <= jugador.getX())
@@ -527,15 +459,20 @@ public class PantallaNivelDos implements Screen {
     }
 
     private boolean movimientoEnemigo(Enemigo enemigo){
-        if(random.nextInt(100)<20){
-            if(enemigo.getX()<jugador.getX()){
-                enemigo.setX(enemigo.getX()+2);
-            }if(enemigo.getX()>jugador.getX()){
-                enemigo.setX(enemigo.getX()-2);
-            }if(enemigo.getY()<jugador.getY()){
-                enemigo.setY(enemigo.getY()+2);
+        if(random.nextInt(300)<10) {
+            if (enemigo.getX() < jugador.getX()) {
+                enemigo.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_DERECHA);
+            }
+            if (enemigo.getX() > jugador.getX()) {
+                enemigo.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_IZQUIERDA);
+            }
+            return true;
+        }
+        if(random.nextInt(300)<10){
+            if(enemigo.getY()<jugador.getY()){
+                enemigo.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_ARRIBA);
             }if(enemigo.getY()>jugador.getY()){
-                enemigo.setY(enemigo.getY()-2);
+                enemigo.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_ABAJO);
             }
             return true;
         }
@@ -567,18 +504,16 @@ public class PantallaNivelDos implements Screen {
     @Override
     public void dispose() {
         texturaJugador.dispose();
+        mapa.dispose();
         texturaItemPlayera.dispose();
         texturaEnemigoPapa.dispose();
         texturaEnemigoMama.dispose();
-        texturaItemRedbull.dispose();
-        musicaFondo.dispose();
-        mapa.dispose();
 
+        musicaFondo.dispose();
         //Parte actualizada
         juego.getAssetManager().unload("DUDE_camina.png");
         juego.getAssetManager().unload("Papa_camina.png");
         juego.getAssetManager().unload("Playera.png");
-        juego.getAssetManager().unload("RedBull.png");
         juego.getAssetManager().unload("Mama_camina.png");
 
     }

@@ -17,7 +17,6 @@ import java.util.Random;
  */
 public class Enemigo {
 
-
     //Velocidad
     public static final float VELOCIDAD_X = 4;      // Velocidad horizontal
     public static final float VELOCIDAD_UP = 4;    // Vel. vertical (arriba)
@@ -195,6 +194,8 @@ public class Enemigo {
                 if (nuevaX >= 0) {
                     sprite.setX(nuevaX);
                 }
+            }else{
+                this.setEstadoMovimiento(EstadoMovimiento.MOV_ABAJO);
             }
         }
     }
@@ -220,6 +221,8 @@ public class Enemigo {
                 if (nuevaX >= 0) {
                     sprite.setY(nuevaX);
                 }
+            }else{
+                this.setEstadoMovimiento(EstadoMovimiento.MOV_ARRIBA);
             }
         }
 

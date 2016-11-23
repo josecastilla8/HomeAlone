@@ -2,6 +2,7 @@ package mx.itesm;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -59,7 +60,7 @@ public class PantallaNivelUno implements Screen {
 
     //Declaramos al jugador
     private Texture texturaJugador;
-    private Personaje jugador;
+    private Enemigo jugador;
 
     // Pad
     private Touchpad pad;
@@ -115,6 +116,7 @@ public class PantallaNivelUno implements Screen {
 
     @Override
     public void show() {
+
         manager = juego.getAssetManager();
         random = new Random();
         texturaFinalGano = new Texture("Pantalla Winner.png");
@@ -182,6 +184,7 @@ public class PantallaNivelUno implements Screen {
         //Gdx.input.setInputProcessor(escena);
         //Quien procesa los eventos
         Gdx.gl.glClearColor(1,0,0,1);
+        Gdx.input.setCatchBackKey(true);
 
     }
 
@@ -225,7 +228,6 @@ public class PantallaNivelUno implements Screen {
         Texture texturaBtnFlechaDerecha = manager.get("right.png");
         Texture texturaBtnFlechaIzquierda = manager.get("left.png");
 
-
         btnFlechaArriba = new Boton(texturaBtnFlechaArriba);
         btnFlechaDerecha = new Boton(texturaBtnFlechaDerecha);
         btnFlechaIzquierda = new Boton(texturaBtnFlechaIzquierda);
@@ -249,7 +251,7 @@ public class PantallaNivelUno implements Screen {
         rendererMapa.setView(camara);
 
         //Dude
-        jugador = new Personaje(texturaJugador);
+        jugador = new Enemigo(texturaJugador);
 
         //enemigo
         //texturaEnemigoPapa=manager.get("Papa_sprite.png");
@@ -322,13 +324,7 @@ public class PantallaNivelUno implements Screen {
 
                 //Posicion papa
 
-                if(xActual == jugador.getX() && yActual == jugador.getY()){
-                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
-                }else if(xActual > jugador.getX() && yActual == jugador.getY()){
-                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
-                }else if(xActual < jugador.getX() && yActual == jugador.getY()){
-                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
-                }
+
 
 
 
@@ -348,19 +344,19 @@ public class PantallaNivelUno implements Screen {
                     contadorvidas--;
                 }
                 if(tocando(btnFlechaAbajo)){
-                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ABAJO);
+                    jugador.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_ABAJO);
 
                 }
                 if(tocando(btnFlechaArriba)){
-                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_ARRIBA);
+                    jugador.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_ARRIBA);
 
                 }
                 if(tocando(btnFlechaDerecha)){
-                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
+                    jugador.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_DERECHA);
 
                 }
                 if(tocando(btnFlechaIzquierda)){
-                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
+                    jugador.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_IZQUIERDA);
 
                 }
                 //System.out.println(checarColisiones());
@@ -411,6 +407,9 @@ public class PantallaNivelUno implements Screen {
             default:
                 break;
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+
+        }
 
 
         // Dibuja el HUD
@@ -439,12 +438,17 @@ public class PantallaNivelUno implements Screen {
     }
 
     private boolean movimientoEnemigo(Enemigo enemigo){
-        if(random.nextInt(100)<10){
-            if(enemigo.getX()<jugador.getX()){
+        if(random.nextInt(300)<10) {
+            if (enemigo.getX() < jugador.getX()) {
                 enemigo.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_DERECHA);
-            }if(enemigo.getX()>jugador.getX()){
+            }
+            if (enemigo.getX() > jugador.getX()) {
                 enemigo.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_IZQUIERDA);
-            }if(enemigo.getY()<jugador.getY()){
+            }
+            return true;
+        }
+        if(random.nextInt(300)<10){
+            if(enemigo.getY()<jugador.getY()){
                 enemigo.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_ARRIBA);
             }if(enemigo.getY()>jugador.getY()){
                 enemigo.setEstadoMovimiento(Enemigo.EstadoMovimiento.MOV_ABAJO);
