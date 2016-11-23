@@ -316,6 +316,7 @@ public class PantallaNivelDos implements Screen {
     public void render(float delta) {
         jugador.actualizar(mapa);
         enemigoPapa.actualizar(mapa);
+        enemigoMama.actualizar(mapa);
 
         Gdx.gl.glClearColor(1,1,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -344,8 +345,10 @@ public class PantallaNivelDos implements Screen {
 
                 //Movimiento del Papa
                 movimientoEnemigo(enemigoPapa);
+                if (random.nextInt(20)<5){
+                    movimientoEnemigo(enemigoMama);
+                }
 
-                movimientoEnemigo(enemigoMama);
                 //Posicion papa
 
 
