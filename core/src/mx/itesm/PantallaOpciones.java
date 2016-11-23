@@ -1,6 +1,7 @@
 package mx.itesm;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -42,7 +43,7 @@ public class PantallaOpciones implements Screen {
     private Boton btnMute;
     private Texture texturaPlay;
     private Boton btnPlay;
-
+    private Preferences pref = Gdx.app.getPreferences("Preferencias");
 
     public PantallaOpciones(Juego juego) {
 
@@ -54,9 +55,8 @@ public class PantallaOpciones implements Screen {
         manager= juego.getAssetManager();
 
         //Audio
-        musicaFondo= Gdx.audio.newMusic(Gdx.files.internal("audio/SegundoNivel.mp3"));
-        musicaFondo.setLooping(true);
-        musicaFondo.play();
+
+
 
 
 
@@ -133,11 +133,14 @@ public class PantallaOpciones implements Screen {
         btnMute.render(batch);
         btnPlay.render(batch);
         if(tocando(btnMute)){
-            musicaFondo.pause();
+            Sonidos.musicaFondo.pause();
+            pref.putBoolean("musica",false);
         }
         if(tocando(btnPlay)){
-            musicaFondo.play();
+            Sonidos.musicaFondo.play();
+            pref.putBoolean("musica",true);
         }
+        pref.flush();
         batch.end();
         escena.draw();
     }

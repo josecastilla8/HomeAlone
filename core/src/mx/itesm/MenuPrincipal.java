@@ -80,7 +80,7 @@ public class MenuPrincipal implements Screen {
 		texturaBtnJugar= new Texture("Start.png");
 		TextureRegionDrawable trBtnJugador = new TextureRegionDrawable(new TextureRegion(texturaBtnJugar));
 		ImageButton btnJugar = new ImageButton(trBtnJugador);
-		btnJugar.setPosition(ANCHO / 2 - btnJugar.getWidth() / 2, 0.47f * ALTO);
+		btnJugar.setPosition(ANCHO / 2 - btnJugar.getWidth() / 2, 0.35f * ALTO);
 
 		escena.addActor(btnJugar);
 
@@ -88,7 +88,8 @@ public class MenuPrincipal implements Screen {
 		texturaBtnOpciones= new Texture("Setting.png");
 		TextureRegionDrawable trBtnOpciones = new TextureRegionDrawable(new TextureRegion(texturaBtnOpciones));
 		ImageButton btnOpciones = new ImageButton(trBtnOpciones);
-		btnOpciones.setPosition((ANCHO/2) - btnOpciones.getWidth()/2, 0.23f * ALTO);
+		//btnOpciones.setPosition((ANCHO/2) - btnOpciones.getWidth()/2, 0.23f * ALTO);
+		btnOpciones.setPosition((5*ANCHO /6) - (btnOpciones.getWidth()/ 2), 0.23f * ALTO);
 		escena.addActor(btnOpciones);
 
 		//Boton Acerca de
@@ -98,13 +99,13 @@ public class MenuPrincipal implements Screen {
 		btnAcercaDe.setPosition((ANCHO/6)-(texturaBtnAcercaDe.getWidth()/2), 0.23f * ALTO);
 		escena.addActor(btnAcercaDe);
 
-		//Boton Scores
+		/*Boton Scores
 		texturaBtnScores= new Texture("High Score1.png");
 		TextureRegionDrawable trBtnScores = new TextureRegionDrawable(new TextureRegion(texturaBtnScores));
 		ImageButton btnScores = new ImageButton(trBtnScores);
 		btnScores.setPosition((5*ANCHO /6) - (btnScores.getWidth()/ 2), 0.23f * ALTO);
 		escena.addActor(btnScores);
-
+		*/
 
 
 		btnJugar.addListener(new ClickListener(){
@@ -134,7 +135,7 @@ public class MenuPrincipal implements Screen {
 			}
 
 		});
-
+		/*
 		btnScores.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x,float y){
@@ -142,6 +143,7 @@ public class MenuPrincipal implements Screen {
 				juego.setScreen(new PantallaScores(juego));
 			}
 		});
+		*/
 
 		escena.setViewport(vista);
 		Gdx.input.setInputProcessor(escena);

@@ -171,6 +171,7 @@ public class PantallaNivelUno implements Screen {
         escena3.addActor(btnContinue);
         escena3.addActor(btnExit);
 
+
         inicializarCamara();
         crearEscena();
         cargarMapa(); //nuevo
@@ -223,6 +224,7 @@ public class PantallaNivelUno implements Screen {
         musicaFondo= manager.get("audio/cancionJuego.mp3");
         sonidoRopa= manager.get("audio/atrapaRopa.mp3");
 
+        //Flechas
         Texture texturaBtnFlechaArriba = manager.get("up.png");
         Texture texturaBtnFlechaAbajo = manager.get("down.png");
         Texture texturaBtnFlechaDerecha = manager.get("right.png");
@@ -243,8 +245,8 @@ public class PantallaNivelUno implements Screen {
         btnFlechaDerecha.setPosicion(130,125);
         btnFlechaIzquierda.setPosicion(10,125);
 
-        musicaFondo.setLooping(true);
-        musicaFondo.play();
+        //musicaFondo.setLooping(true);
+        //musicaFondo.play();
 
         //Crea el objeto que dibujara el mapa
         rendererMapa = new OrthogonalTiledMapRenderer(mapa, batch);
@@ -332,10 +334,14 @@ public class PantallaNivelUno implements Screen {
                 rendererMapa.render();
 
                 batch.begin();
+
+                //Controles
                 btnFlechaIzquierda.render(batch);
                 btnFlechaArriba.render(batch);
                 btnFlechaAbajo.render(batch);
                 btnFlechaDerecha.render(batch);
+
+                //Vida
                 texto.mostrarMensaje(batch, "Score: " + contador, 100, 750);
                 vida.mostrarMensaje(batch, "Vida: " + contadorvidas, 750,750);
                 jugador.render(batch);
@@ -384,11 +390,11 @@ public class PantallaNivelUno implements Screen {
                 escena.draw();
                 break;
             case 1:
-                Gdx.input.setInputProcessor(escena2);
-                batch.begin();
+                //Gdx.input.setInputProcessor(escena2);
+                //batch.begin();
                 juego.setScreen(new PantallaCargando(juego,2));
-                batch.end();
-                escena2.draw();
+                //batch.end();
+                //escena2.draw();
                 break;
             case 2:
                 Gdx.input.setInputProcessor(escena2);

@@ -1,6 +1,7 @@
 package mx.itesm;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -38,6 +39,8 @@ public class PantallaSplash implements Screen{
 
     private int cont= 0;
 
+    private Preferences pref = Gdx.app.getPreferences("Preferencias");
+
     public PantallaSplash(Juego juego){
         this.juego= juego;
     }
@@ -66,6 +69,10 @@ public class PantallaSplash implements Screen{
         batch = new SpriteBatch();
 
         Gdx.input.setInputProcessor(escena);
+        Sonidos.cargaAudio();
+        if(pref.getBoolean("musica",true)){
+            Sonidos.musicaFondo.play();
+        }
 
     }
 
