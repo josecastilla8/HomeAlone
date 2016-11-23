@@ -220,12 +220,16 @@ public class PantallaNivelUno implements Screen {
         musicaFondo= manager.get("audio/cancionJuego.mp3");
         sonidoRopa= manager.get("audio/atrapaRopa.mp3");
 
-        Texture texturaBtnFlechaArriba = manager.get("BotonFlecha.png");
+        Texture texturaBtnFlechaArriba = manager.get("up.png");
+        Texture texturaBtnFlechaAbajo = manager.get("down.png");
+        Texture texturaBtnFlechaDerecha = manager.get("right.png");
+        Texture texturaBtnFlechaIzquierda = manager.get("left.png");
+
 
         btnFlechaArriba = new Boton(texturaBtnFlechaArriba);
-        btnFlechaDerecha = new Boton(texturaBtnFlechaArriba);
-        btnFlechaIzquierda = new Boton(texturaBtnFlechaArriba);
-        btnFlechaAbajo = new Boton(texturaBtnFlechaArriba);
+        btnFlechaDerecha = new Boton(texturaBtnFlechaDerecha);
+        btnFlechaIzquierda = new Boton(texturaBtnFlechaIzquierda);
+        btnFlechaAbajo = new Boton(texturaBtnFlechaAbajo);
 
         Texture texturaBtnPausa = manager.get("Pause.png");
         btnPausa = new Boton(texturaBtnPausa);
@@ -234,8 +238,8 @@ public class PantallaNivelUno implements Screen {
 
         btnFlechaArriba.setPosicion(70,200);
         btnFlechaAbajo.setPosicion(70,50);
-        btnFlechaDerecha.setPosicion(10,125);
-        btnFlechaIzquierda.setPosicion(130,125);
+        btnFlechaDerecha.setPosicion(130,125);
+        btnFlechaIzquierda.setPosicion(10,125);
 
         musicaFondo.setLooping(true);
         musicaFondo.play();
@@ -352,11 +356,11 @@ public class PantallaNivelUno implements Screen {
 
                 }
                 if(tocando(btnFlechaDerecha)){
-                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
+                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
 
                 }
                 if(tocando(btnFlechaIzquierda)){
-                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
+                    jugador.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
 
                 }
                 //System.out.println(checarColisiones());
