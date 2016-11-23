@@ -92,6 +92,10 @@ public class PantallaNivelDos implements Screen {
     private Texture texturaEnemigoMama;
     private Enemigo enemigoMama;
 
+    //Enemigo Bruno
+    private Texture texturaEnemigoBruno;
+    private EnemigoB enemigoBruno;
+
 
 
     //Item Playera
@@ -236,6 +240,7 @@ public class PantallaNivelDos implements Screen {
         texturaEnemigoMama= manager.get("Mama_camina.png");
         texturaItemPlayera= manager.get("Playera.png");
         texturaItemRedbull= manager.get("RedBull.png");
+        texturaEnemigoBruno= manager.get("Bruno_camina.png");
 
         //Audio
         musicaFondo= manager.get("audio/cancionJuego.mp3");
@@ -280,6 +285,7 @@ public class PantallaNivelDos implements Screen {
         enemigoMama= new Enemigo(texturaEnemigoMama);
         enemigoMama.setX(200);
         enemigoMama.setY(200);
+        enemigoBruno= new EnemigoB(texturaEnemigoBruno);
         //Item
         //manager.load("Maceta.png", Texture.class);
         //texturaItemPlayera= manager.get("Playera.png");
@@ -544,14 +550,19 @@ public class PantallaNivelDos implements Screen {
         texturaItemPlayera.dispose();
         texturaEnemigoPapa.dispose();
         texturaEnemigoMama.dispose();
+        texturaItemRedbull.dispose();
+        texturaEnemigoBruno.dispose();
 
+        //Audio
         musicaFondo.dispose();
-        //Parte actualizada
+
+        //Descargar texturas
         juego.getAssetManager().unload("DUDE_camina.png");
         juego.getAssetManager().unload("Papa_camina.png");
         juego.getAssetManager().unload("Playera.png");
         juego.getAssetManager().unload("Mama_camina.png");
-
+        juego.getAssetManager().unload("RedBull.png");
+        juego.getAssetManager().unload("Bruno_camina.png");
     }
 
 }

@@ -583,13 +583,14 @@ public class PantallaNivelTres implements Screen {
         texturaItemRedbull.dispose();
 
         musicaFondo.dispose();
+
         //Parte actualizada
         juego.getAssetManager().unload("DUDE_camina.png");
         juego.getAssetManager().unload("Papa_camina.png");
         juego.getAssetManager().unload("Playera.png");
         juego.getAssetManager().unload("Mama_camina.png");
         juego.getAssetManager().unload("Bruno_camina.png");
-
+        juego.getAssetManager().unload("RedBull.png");
     }
 
 }

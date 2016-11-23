@@ -497,16 +497,19 @@ public class PantallaNivelUno implements Screen {
         texturaItemPlayera.dispose();
         texturaEnemigoPapa.dispose();
         texturaEnemigoMama.dispose();
-        //texturaItemRedbull.dispose();
-        //texturaEnemigoBruno.dispose();
+        texturaItemRedbull.dispose();
+        texturaEnemigoBruno.dispose();
+
+        //Audio
         musicaFondo.dispose();
+
         //Parte actualizada
         juego.getAssetManager().unload("DUDE_camina.png");
         juego.getAssetManager().unload("Papa_camina.png");
         juego.getAssetManager().unload("Playera.png");
-        //juego.getAssetManager().unload("RedBull.png");
+        juego.getAssetManager().unload("RedBull.png");
         juego.getAssetManager().unload("Mama_camina.png");
-        //juego.getAssetManager().unload("Bruno_camina.png");
+        juego.getAssetManager().unload("Bruno_camina.png");
     }
 
 }
