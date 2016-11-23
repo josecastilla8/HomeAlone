@@ -91,6 +91,8 @@ public class PantallaNivelDos implements Screen {
     private Texture texturaEnemigoMama;
     private Enemigo enemigoMama;
 
+
+
     //Item Playera
     private Texture texturaItemPlayera;
     private Item playeraItem;
@@ -112,6 +114,11 @@ public class PantallaNivelDos implements Screen {
     private Texture texturaPausa;
     private Fondo fondoPausa;
     private Boton btnPausa;
+
+    //Item Redbull
+    private Texture texturaItemRedbull;
+    private Item redbullItem;
+    private ArrayList<Item> itemRedbull;
 
     public PantallaNivelDos(Juego juego) {
         this.juego= juego;
@@ -180,6 +187,7 @@ public class PantallaNivelDos implements Screen {
         texto = new Texto();
         vida = new Texto();
         itemPlayera = new ArrayList<Item>();
+        itemRedbull= new ArrayList<Item>();
 
         //crearPersonaje();
         //escena = new Stage();
@@ -222,6 +230,7 @@ public class PantallaNivelDos implements Screen {
         texturaEnemigoPapa= manager.get("Papa_camina.png");
         texturaEnemigoMama= manager.get("Mama_camina.png");
         texturaItemPlayera= manager.get("Playera.png");
+        texturaItemRedbull= manager.get("RedBull.png");
 
         //Audio
         musicaFondo= manager.get("audio/cancionJuego.mp3");
@@ -269,6 +278,8 @@ public class PantallaNivelDos implements Screen {
         //manager.load("Maceta.png", Texture.class);
         //texturaItemPlayera= manager.get("Playera.png");
         playeraItem= new Item(texturaItemPlayera);
+        //Item Redbull
+        redbullItem= new Item(texturaItemRedbull);
     }
 
     private void inicializarCamara() {
@@ -315,7 +326,11 @@ public class PantallaNivelDos implements Screen {
 
         }
 
+        if(random.nextInt(1000) <50 && itemRedbull.size()<=3){
+            itemRedbull.add(new Item(texturaItemRedbull,random.nextInt(1000),random.nextInt(700)));
 
+
+        }
 
         float xActual = jugador.getX();
         float yActual = jugador.getY();
@@ -378,6 +393,15 @@ public class PantallaNivelDos implements Screen {
                         itemPlayera.get(i).setX(10000);
                         contador++;
                         sonidoRopa.play();
+                    }
+                }
+
+                for (int i = 0; i < itemRedbull.size(); i++) {
+                    if(checarColisiones(itemRedbull.get(i)) == false){
+                        itemRedbull.get(i).render(batch);
+                    }else if(checarColisiones(itemRedbull.get(i)) == true){
+                        itemRedbull.get(i).setX(10000);
+                        contadorvidas=contadorvidas+30;
                     }
 
                 }
