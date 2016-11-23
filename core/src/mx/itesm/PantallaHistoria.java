@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * Created by safin on 22/11/2016.
  */
 public class PantallaHistoria implements Screen {
-    private final float ALTO= 800;
+    private final float ALTO= 720;
     private final float ANCHO= 1280;
 
     private Juego juego;
@@ -35,6 +35,7 @@ public class PantallaHistoria implements Screen {
     //**********************
 
     //Fondo
+    private Texture fondoHistoria0;
     private Texture fondoHistoria1;
     private Texture fondoHistoria2;
     private Texture fondoHistoria3;
@@ -42,6 +43,9 @@ public class PantallaHistoria implements Screen {
     private Texture fondoHistoria5;
     private Texture fondoHistoria6;
     private Texture fondoHistoria7;
+    private Texture fondoHistoria8;
+
+    private Fondo fondo0;
     private Fondo fondo1;
     private Fondo fondo2;
     private Fondo fondo3;
@@ -49,7 +53,7 @@ public class PantallaHistoria implements Screen {
     private Fondo fondo5;
     private Fondo fondo6;
     private Fondo fondo7;
-
+    private Fondo fondo8;
     //Boton
     private Texture texturaBtnSkip;
 
@@ -73,13 +77,17 @@ public class PantallaHistoria implements Screen {
         vista= new StretchViewport(ANCHO, ALTO, camara);
 
         //Fondo
-        fondoHistoria1 = new Texture(Gdx.files.internal("Frame1.png"));
+        fondoHistoria0 = new Texture(Gdx.files.internal("Iphone .png"));
+        fondoHistoria1 = new Texture(Gdx.files.internal("Layer0.png"));
         fondoHistoria2 = new Texture(Gdx.files.internal("Frame2.png"));
         fondoHistoria3 = new Texture(Gdx.files.internal("Frame3.png"));
         fondoHistoria4 = new Texture(Gdx.files.internal("Frame4.png"));
         fondoHistoria5 = new Texture(Gdx.files.internal("Frame5.png"));
         fondoHistoria6 = new Texture(Gdx.files.internal("Frame6.png"));
         fondoHistoria7 = new Texture(Gdx.files.internal("Frame7.png"));
+        fondoHistoria8 = new Texture(Gdx.files.internal("Frame8.png"));
+
+        fondo0 = new Fondo(fondoHistoria0);
         fondo1 = new Fondo(fondoHistoria1);
         fondo2 = new Fondo(fondoHistoria2);
         fondo3 = new Fondo(fondoHistoria3);
@@ -87,6 +95,7 @@ public class PantallaHistoria implements Screen {
         fondo5 = new Fondo(fondoHistoria5);
         fondo6 = new Fondo(fondoHistoria6);
         fondo7 = new Fondo(fondoHistoria7);
+        fondo8 = new Fondo(fondoHistoria8);
         batch = new SpriteBatch();
 
         //Boton Skip
@@ -117,32 +126,39 @@ public class PantallaHistoria implements Screen {
         escena.draw();
 
         //Fondo
-
         batch.begin();
+
         if(cont<150) {
+            fondo0.render(batch);
+        }
+        if(cont>150 && cont <250) {
             fondo1.render(batch);
         }
-        if(cont >150 && cont <250){
+        if(cont >250 && cont <350){
             fondo2.render(batch);
         }
-        if(cont >250 && cont <350){
+        if(cont >350 && cont <450){
             fondo3.render(batch);
         }
-        if(cont >350 && cont <450){
+        if(cont >450 && cont <550){
             fondo4.render(batch);
         }
-        if(cont >450 && cont <550){
+        if(cont >550 && cont <650){
             fondo5.render(batch);
         }
-        if(cont >550 && cont <650){
+        if(cont >650 && cont <750){
             fondo6.render(batch);
         }
-        if(cont >650 && cont <750){
+        if(cont >750 && cont <850){
             fondo7.render(batch);
+        }
+        if(cont >850 && cont <950){
+            fondo8.render(batch);
         }
 
 
-        if(cont >750 ){
+
+        if(cont >950 ){
             juego.setScreen(new PantallaCargando(juego, 1));
             this.dispose();
         }
