@@ -33,7 +33,7 @@ import java.util.Random;
 /**
  * Created by Daniela on 12/09/2016.
  */
-//Comentario
+//Cambio
 public class PantallaNivelTres implements Screen {
 
     public static final int ANCHO_MAPA = 1280;
